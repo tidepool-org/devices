@@ -10,13 +10,15 @@ DOCKER_REPOSITORY=tidepool/$(SERVICE)
 
 all: test build
 ci:	test docker-build docker-push-ci
-build:	deps
+dist:
+		mkdir -p dist
+build:	dist
 		$(GOBUILD) -o $(DIST) ./...
 test:
 		$(GOTEST) -v ./...
 clean:
 		$(GOCLEAN)
-		rm -f $(BINARY)
+		rm -rf $(DIST)
 start:	build
 		./$(BINARY)
 deps:
