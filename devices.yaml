@@ -1,0 +1,13 @@
+devices:
+  cgms:
+    - id: d25c3f1b-a2e8-44e2-b3a3-fd07806fc245
+      display_name: Dexcom G6
+      manufacturers:
+        - Dexcom
+      model: G6
+  pumps:
+    - id: 6678c377-928c-49b3-84c1-19e2dafaff8d
+      display_name: Omnipod Horizon
+      manufacturers:
+        - Insulet
+      model: Omnipod Horizon

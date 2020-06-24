@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/tidepool-org/devices/api";
+
+// A service that returns information about Tidepool supported devices
+service Devices {
+  // Get pump by id
+  rpc GetPumpById(GetPumpByIdRequest) returns (GetPumpByIdResponse) {}
+
+  // List pumps
+  rpc ListPumps(ListPumpsRequest) returns (ListPumpsResponse) {}
+
+  // Get cgm by id
+  rpc GetCgmById(GetCgmByIdRequest) returns (GetCgmByIdResponse) {}
+
+  // List cgms
+  rpc ListCgms(ListCgmsRequest) returns (ListCgmsResponse) {}
+}
+
+message GetPumpByIdRequest {
+  string id = 1;
+}
+
+message GetPumpByIdResponse {
+  Pump pump = 1;
+}
+
+message ListPumpsRequest {}
+
+message ListPumpsResponse {
+  repeated Pump pumps = 1;
+}
+
+message Pump {
+  // unique device identifier
+  string id = 1;
+
+  // device display name
+  string displayName = 2;
+
+  // device manufacturers
+  repeated string manufacturers = 3;
+
+  // device model
+  string model = 4;
+}
+
+message GetCgmByIdRequest {
+  string id = 1;
+}
+
+message GetCgmByIdResponse {
+  Cgm cgm = 1;
+}
+
+message ListCgmsRequest {}
+
+message ListCgmsResponse {
+  repeated Cgm cgms = 1;
+}
+
+message Cgm {
+  // unique device identifier
+  string id = 1;
+
+  // device display name
+  string displayName = 2;
+
+  // device manufacturers
+  repeated string manufacturers = 3;
+
+  // device model
+  string model = 4;
+}

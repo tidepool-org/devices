@@ -1,0 +1,19 @@
+sudo: false
+
+env:
+  - GO111MODULE=on
+
+language: go
+
+go:
+  - 1.14.4
+
+script:
+  - make ci
+
+services:
+  - docker
+
+cache:
+  directories:
+    - $HOME/.cache/go-build
