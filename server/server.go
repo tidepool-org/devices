@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health"
 	grpcHealth "google.golang.org/grpc/health/grpc_health_v1"
+	grpcReflection "google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 	"net"
 	"sync"
@@ -49,6 +50,8 @@ func New(p *Params) *Server {
 
 	api.RegisterDevicesServer(grpcServer, srvr)
 	grpcHealth.RegisterHealthServer(grpcServer, healthServer)
+	grpcReflection.Register(grpcServer)
+
 	return srvr
 }
 
