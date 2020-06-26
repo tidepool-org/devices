@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 )
 
@@ -34,7 +33,6 @@ func main() {
 		Cgms:  repo.NewCgmsRepo(devicesCfg.Devices),
 		Pumps: repo.NewPumpsRepo(devicesCfg.Devices),
 	}
-	srvr := server.New(params)
 
 	// listen to signals to stop server
 	// convert to cancel on context that server listens to
@@ -47,10 +45,7 @@ func main() {
 		cancelFunc()
 	}(stop, cancelFunc)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-
-	go srvr.Run(ctx, &wg)
-
-	wg.Wait()
+	if err := server.ServeAndWait(ctx, params); err != nil {
+		log.Fatalln(err.Error())
+	}
 }
