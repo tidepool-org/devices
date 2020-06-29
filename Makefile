@@ -36,7 +36,7 @@ clean:
 		$(GOCLEAN)
 		rm -rf $(DIST)
 start:	build
-		./$(BINARY)
+		TIDEPOOL_DEVICES_CONFIG_FILENAME=`pwd`/devices.yaml ./$(BINARY)
 deps:
 		$(GOGET) ./...
 docker-login:
