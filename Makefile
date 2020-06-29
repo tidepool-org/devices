@@ -12,6 +12,22 @@ all: test build
 ci:	test docker-build docker-push-ci
 dist:
 		mkdir -p dist
+generate:
+			protoc \
+        		-I ./api \
+        		-I `go list -m -f "{{.Dir}}" github.com/grpc-ecosystem/grpc-gateway/v2`/third_party/googleapis \
+        		--go_out=plugins=grpc,paths=source_relative:./api \
+        		--grpc-gateway_out=./api \
+        		api/api.proto
+
+			mv ./api/github.com/tidepool-org/devices/api/* ./api/ && \
+            	rm -r ./api/github.com
+install:
+		go get \
+			github.com/golang/protobuf/protoc-gen-go \
+			github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+			github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+			github.com/rakyll/statik
 build:	dist
 		$(GOBUILD) -o $(DIST) ./...
 test:
@@ -20,7 +36,7 @@ clean:
 		$(GOCLEAN)
 		rm -rf $(DIST)
 start:	build
-		./$(BINARY)
+		TIDEPOOL_DEVICES_CONFIG_FILENAME=`pwd`/devices.yaml ./$(BINARY)
 deps:
 		$(GOGET) ./...
 docker-login:

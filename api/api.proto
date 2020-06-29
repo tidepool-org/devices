@@ -2,21 +2,39 @@ syntax = "proto3";
 
 package api;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/tidepool-org/devices/api";
 
 // A service that returns information about Tidepool supported devices
 service Devices {
   // Get pump by id
-  rpc GetPumpById(GetPumpByIdRequest) returns (GetPumpByIdResponse) {}
+  rpc GetPumpById(GetPumpByIdRequest) returns (GetPumpByIdResponse) {
+    option (google.api.http) = {
+        get: "/v1/devices/pumps/{id}"
+    };
+  }
 
   // List pumps
-  rpc ListPumps(ListPumpsRequest) returns (ListPumpsResponse) {}
+  rpc ListPumps(ListPumpsRequest) returns (ListPumpsResponse) {
+    option (google.api.http) = {
+      get: "/v1/devices/pumps"
+    };
+  }
 
   // Get cgm by id
-  rpc GetCgmById(GetCgmByIdRequest) returns (GetCgmByIdResponse) {}
+  rpc GetCgmById(GetCgmByIdRequest) returns (GetCgmByIdResponse) {
+    option (google.api.http) = {
+      get: "/v1/devices/cgms/{id}"
+    };
+  }
 
   // List cgms
-  rpc ListCgms(ListCgmsRequest) returns (ListCgmsResponse) {}
+  rpc ListCgms(ListCgmsRequest) returns (ListCgmsResponse) {
+    option (google.api.http) = {
+      get: "/v1/devices/cgms"
+    };
+  }
 }
 
 message GetPumpByIdRequest {
