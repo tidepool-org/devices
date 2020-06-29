@@ -22,10 +22,47 @@ You can install the grpc and grpc-gateway-proxy generation plugins by running:
 ```
 make install
 ```
-### Generation
+### Code generation
 
 If you make any changes to the proto service definition, you can regenerate the client, server stub, server interface and gateway-proxy 
 by running:
 ```
 make generate
 ```
+
+### Examples
+
+##### List pumps using GRPC
+```
+grpcurl -plaintext localhost:50051 api.Devices/ListPumps
+
+{
+  "pumps": [
+    {
+      "id": "6678c377-928c-49b3-84c1-19e2dafaff8d",
+      "displayName": "Omnipod Horizon",
+      "manufacturers": [
+        "Insulet"
+      ],
+      "model": "Omnipod Horizon"
+    }
+  ]
+}
+```
+
+##### Get pump by id using GRPC 
+```
+grpcurl -plaintext -d '{"id":"6678c377-928c-49b3-84c1-19e2dafaff8d"}' localhost:50051 api.Devices/GetPumpById
+
+{
+  "pump": {
+    "id": "6678c377-928c-49b3-84c1-19e2dafaff8d",
+    "displayName": "Omnipod Horizon",
+    "manufacturers": [
+      "Insulet"
+    ],
+    "model": "Omnipod Horizon"
+  }
+}
+```
+
