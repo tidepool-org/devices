@@ -12,6 +12,7 @@ import (
 	grpcHealth "google.golang.org/grpc/health/grpc_health_v1"
 	grpcReflection "google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
+	"log"
 	"net"
 	"sync"
 )
@@ -57,7 +58,7 @@ func NewGrpcServer(p *Params) *GrpcServer {
 func (s *GrpcServer) GetPumpById(ctx context.Context, request *api.GetPumpByIdRequest) (*api.GetPumpByIdResponse, error) {
 	pump, err := s.pumps.GetById(ctx, request.Id)
 	if err != nil {
-		fmt.Printf("error while getting pump by id: %v", err)
+		log.Println(fmt.Sprintf("error while getting pump by id: %v", err))
 		return nil, status.Errorf(codes.Internal, "unexpected error occurred")
 	}
 	if pump == nil {
@@ -72,7 +73,7 @@ func (s *GrpcServer) GetPumpById(ctx context.Context, request *api.GetPumpByIdRe
 func (s *GrpcServer) ListPumps(ctx context.Context, request *api.ListPumpsRequest) (*api.ListPumpsResponse, error) {
 	pumps, err := s.pumps.List(ctx)
 	if err != nil {
-		fmt.Printf("error while getting list of pumps: %v", err)
+		log.Println(fmt.Sprintf("error while getting list of pumps: %v", err))
 		return nil, status.Errorf(codes.Internal, "unexpected error occurred")
 	}
 
@@ -84,7 +85,7 @@ func (s *GrpcServer) ListPumps(ctx context.Context, request *api.ListPumpsReques
 func (s *GrpcServer) GetCgmById(ctx context.Context, request *api.GetCgmByIdRequest) (*api.GetCgmByIdResponse, error) {
 	cgm, err := s.cgms.GetById(ctx, request.Id)
 	if err != nil {
-		fmt.Printf("error while getting cgm by id: %v", err)
+		log.Println(fmt.Sprintf("error while getting cgm by id: %v", err))
 		return nil, status.Errorf(codes.Internal, "unexpected error occurred")
 	}
 	if cgm == nil {
@@ -99,7 +100,7 @@ func (s *GrpcServer) GetCgmById(ctx context.Context, request *api.GetCgmByIdRequ
 func (s *GrpcServer) ListCgms(ctx context.Context, request *api.ListCgmsRequest) (*api.ListCgmsResponse, error) {
 	cgms, err := s.cgms.List(ctx)
 	if err != nil {
-		fmt.Printf("error while getting list of cgms: %v", err)
+		log.Println(fmt.Sprintf("error while getting list of cgms: %v", err))
 		return nil, status.Errorf(codes.Internal, "unexpected error occurred")
 	}
 
@@ -114,18 +115,18 @@ func (s *GrpcServer) Run(ctx context.Context, lis net.Listener, wg *sync.WaitGro
 	go func() {
 		<-ctx.Done()
 		if err := s.Stop(); err != nil {
-			fmt.Println(fmt.Sprintf("error while shutting down the grpc server: %v", err))
+			log.Println(fmt.Sprintf("error while shutting down the grpc server: %v", err))
 		}
 	}()
 
-	fmt.Println(fmt.Sprintf("serving grpc requests on %v", lis.Addr().String()))
+	log.Println(fmt.Sprintf("serving grpc requests on %v", lis.Addr().String()))
 	// blocks until the grpc server exits
 	if err := s.grpcServer.Serve(lis); err != nil {
-		fmt.Printf("failed to start grpc server: %v", err)
+		log.Println(fmt.Sprintf("failed to start grpc server: %v", err))
 		return
 	}
 
-	fmt.Println("grpc server was successfully shutdown")
+	log.Println("grpc server was successfully shutdown")
 }
 
 func (s *GrpcServer) Stop() error {

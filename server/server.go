@@ -36,7 +36,7 @@ func ServeAndWait(ctx context.Context, params *Params) error {
 		wg.Add(1)
 		go gatewayProxy.Run(gatewayProxyCtx, gatewayLis, &wg)
 	} else {
-		fmt.Printf("error initializing gateway proxy: %v", err)
+		log.Println(fmt.Sprintf("error initializing gateway proxy: %v", err))
 		if err := grpcServer.Stop(); err != nil {
 			log.Fatalln(fmt.Sprintf("failed to shutdown grpc server: %v", err))
 		}

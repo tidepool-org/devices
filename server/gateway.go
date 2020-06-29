@@ -42,15 +42,15 @@ func (g *GatewayProxy) Run(ctx context.Context, lis net.Listener, wg *sync.WaitG
 	go func() {
 		<-ctx.Done()
 		if err := g.stop(wg); err != nil {
-			fmt.Printf("error while shutting down the gateway proxy: %v\n", err)
+			log.Println(fmt.Sprintf("error while shutting down the gateway proxy: %v", err))
 		} else {
-			fmt.Printf("gateway proxy was successfully shutdown\n")
+			log.Println("gateway proxy was successfully shutdown")
 		}
 	}()
 
-	fmt.Println(fmt.Sprintf("serving http requests on %v", lis.Addr()))
+	log.Println(fmt.Sprintf("serving http requests on %v", lis.Addr()))
 	if err := g.httpServer.Serve(lis); err != nil && err != http.ErrServerClosed {
-		log.Printf("error serving http: %v", err)
+		log.Println(fmt.Printf("error serving http: %v", err))
 	}
 }
 
