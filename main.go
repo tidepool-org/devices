@@ -28,10 +28,16 @@ func main() {
 		log.Fatalf("could not validate devices configuration: %v", err)
 	}
 
+	cgms := repo.CgmsConfigToProtoModels(devicesCfg.Devices.CGMs)
+	pumps, err := repo.PumpsConfigToProtoModels(devicesCfg.Devices.Pumps)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	params := &server.Params{
 		Cfg:   cfg,
-		Cgms:  repo.NewCgmsRepo(devicesCfg.Devices),
-		Pumps: repo.NewPumpsRepo(devicesCfg.Devices),
+		Cgms:  repo.NewCgmsRepo(cgms),
+		Pumps: repo.NewPumpsRepo(pumps),
 	}
 
 	// listen to signals to stop server

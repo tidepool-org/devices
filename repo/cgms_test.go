@@ -2,32 +2,29 @@ package repo
 
 import (
 	"context"
-	"github.com/tidepool-org/devices/config"
+	"github.com/tidepool-org/devices/api"
 	"testing"
 )
 
-var TestCgmData = []*config.CGM{
-	&config.CGM{config.Device{
-		ID:            "1",
+var TestCgmData = []*api.Cgm{
+	{
+		Id:            "1",
 		DisplayName:   "Test device 1",
 		Manufacturers: []string{"Tidepool"},
 		Model:         "Model 1",
-	}},
-	&config.CGM{config.Device{
-		ID:            "2",
+	},
+	{
+		Id:            "2",
 		DisplayName:   "Test device 2",
 		Manufacturers: []string{"Tidepool"},
 		Model:         "Model 2",
-	}},
+	},
 }
 
 func TestInMemoryCgmsRepo_GetById(t *testing.T) {
-	repo := NewCgmsRepo(&config.Devices{
-		CGMs: TestCgmData,
-	})
+	repo := NewCgmsRepo(TestCgmData)
 
 	ctx := context.Background()
-
 	t.Run("Get by id works when ids exist", func(t *testing.T) {
 		first := "1"
 		second := "2"
@@ -71,9 +68,7 @@ func TestInMemoryCgmsRepo_GetById(t *testing.T) {
 }
 
 func TestInMemoryCgmsRepo_List(t *testing.T) {
-	repo := NewCgmsRepo(&config.Devices{
-		CGMs: TestCgmData,
-	})
+	repo := NewCgmsRepo(TestCgmData)
 
 	ctx := context.Background()
 	t.Run("List returns all cgms", func(t *testing.T) {

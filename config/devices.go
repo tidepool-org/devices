@@ -28,7 +28,40 @@ type CGM struct {
 }
 
 type Pump struct {
-	Device `yaml:",inline"`
+	Device     `yaml:",inline"`
+	GuardRails GuardRails `yaml:"guard_rails" validate:"required"`
+}
+
+type GuardRails struct {
+	SuspendThreshold   GuardRail `yaml:"suspend_threshold" validate:"required"`
+	InsulinSensitivity GuardRail `yaml:"insulin_sensitivity" validate:"required"`
+	BasalRates         GuardRail `yaml:"basal_rates" validate:"required"`
+	CarbohydrateRatio  GuardRail `yaml:"carbohydrate_ratio" validate:"required"`
+	BasalRateMaximum   GuardRail `yaml:"basal_rate_maximum" validate:"required"`
+	BolusAmountMaximum GuardRail `yaml:"bolus_amount_maximum" validate:"required"`
+	CorrectionRange    GuardRail `yaml:"correction_range" validate:"required"`
+}
+
+type GuardRail struct {
+	Units             string             `yaml:"units" validate:"required"`
+	DefaultValue      *float64           `yaml:"default"`
+	AbsoluteBounds    []*AbsoluteBounds  `yaml:"absolute_bounds" validate:"required"`
+	RecommendedBounds *RecommendedBounds `yaml:"recommended_bounds"`
+}
+
+type AbsoluteBounds struct {
+	Bounds `yaml:",inline"`
+
+	Increment float64 `yaml:"increment" validate:"gt=0"`
+}
+
+type RecommendedBounds struct {
+	Bounds `yaml:",inline"`
+}
+
+type Bounds struct {
+	Minimum *float64 `yaml:"min"`
+	Maximum *float64 `yaml:"max"`
 }
 
 func NewDevicesConfig() *DevicesConfig {
