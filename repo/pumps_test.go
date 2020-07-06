@@ -2,32 +2,29 @@ package repo
 
 import (
 	"context"
-	"github.com/tidepool-org/devices/config"
+	"github.com/tidepool-org/devices/api"
 	"testing"
 )
 
-var TestPumpData = []*config.Pump{
-	&config.Pump{config.Device{
-		ID:            "1",
+var TestPumpData = []*api.Pump{
+	{
+		Id:            "1",
 		DisplayName:   "Test device 1",
 		Manufacturers: []string{"Tidepool"},
 		Model:         "Model 1",
-	}},
-	&config.Pump{config.Device{
-		ID:            "2",
+	},
+	{
+		Id:            "2",
 		DisplayName:   "Test device 2",
 		Manufacturers: []string{"Tidepool"},
 		Model:         "Model 2",
-	}},
+	},
 }
 
 func TestInMemoryPumpsRepo_GetById(t *testing.T) {
-	repo := NewPumpsRepo(&config.Devices{
-		Pumps: TestPumpData,
-	})
+	repo := NewPumpsRepo(TestPumpData)
 
 	ctx := context.Background()
-
 	t.Run("Get by id works when ids exist", func(t *testing.T) {
 		first := "1"
 		second := "2"
@@ -71,9 +68,7 @@ func TestInMemoryPumpsRepo_GetById(t *testing.T) {
 }
 
 func TestInMemoryPumpsRepo_List(t *testing.T) {
-	repo := NewPumpsRepo(&config.Devices{
-		Pumps: TestPumpData,
-	})
+	repo := NewPumpsRepo(TestPumpData)
 
 	ctx := context.Background()
 	t.Run("List returns all pumps", func(t *testing.T) {

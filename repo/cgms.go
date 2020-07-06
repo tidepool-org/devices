@@ -3,7 +3,6 @@ package repo
 import (
 	"context"
 	"github.com/tidepool-org/devices/api"
-	"github.com/tidepool-org/devices/config"
 )
 
 type CgmsRepo interface {
@@ -11,13 +10,12 @@ type CgmsRepo interface {
 	List(context.Context) ([]*api.Cgm, error)
 }
 
-func NewCgmsRepo(devices *config.Devices) CgmsRepo {
-	cgms := make(map[string]*api.Cgm)
-	for _, p := range devices.CGMs {
-		model := cgmConfigToProto(p)
-		cgms[model.GetId()] = &model
+func NewCgmsRepo(cgms []*api.Cgm) CgmsRepo {
+	cgmsIdMap := make(map[string]*api.Cgm)
+	for _, cgm := range cgms {
+		cgmsIdMap[cgm.GetId()] = cgm
 	}
-	return &inMemoryCgmsRepo{cgms: cgms}
+	return &inMemoryCgmsRepo{cgms: cgmsIdMap}
 }
 
 type inMemoryCgmsRepo struct {
@@ -43,11 +41,3 @@ func (i *inMemoryCgmsRepo) List(ctx context.Context) ([]*api.Cgm, error) {
 	return list, nil
 }
 
-func cgmConfigToProto(cgm *config.CGM) api.Cgm {
-	return api.Cgm{
-		Id:            cgm.ID,
-		DisplayName:   cgm.DisplayName,
-		Manufacturers: cgm.Manufacturers,
-		Model:         cgm.Model,
-	}
-}

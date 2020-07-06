@@ -3,7 +3,6 @@ package repo
 import (
 	"context"
 	"github.com/tidepool-org/devices/api"
-	"github.com/tidepool-org/devices/config"
 )
 
 type PumpsRepo interface {
@@ -11,13 +10,12 @@ type PumpsRepo interface {
 	List(context.Context) ([]*api.Pump, error)
 }
 
-func NewPumpsRepo(devices *config.Devices) PumpsRepo {
-	pumps := make(map[string]*api.Pump)
-	for _, p := range devices.Pumps {
-		model := pumpConfigToProto(p)
-		pumps[model.GetId()] = &model
+func NewPumpsRepo(pumps []*api.Pump) PumpsRepo {
+	pumpsIdMap := make(map[string]*api.Pump)
+	for _, p := range pumps {
+		pumpsIdMap[p.GetId()] = p
 	}
-	return &inMemoryPumpsRepo{pumps: pumps}
+	return &inMemoryPumpsRepo{pumps: pumpsIdMap}
 }
 
 type inMemoryPumpsRepo struct {
@@ -41,13 +39,4 @@ func (i *inMemoryPumpsRepo) List(ctx context.Context) ([]*api.Pump, error) {
 		idx++
 	}
 	return list, nil
-}
-
-func pumpConfigToProto(pump *config.Pump) api.Pump {
-	return api.Pump{
-		Id:            pump.ID,
-		DisplayName:   pump.DisplayName,
-		Manufacturers: pump.Manufacturers,
-		Model:         pump.Model,
-	}
 }
