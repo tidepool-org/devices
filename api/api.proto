@@ -118,7 +118,7 @@ message BasalRatesGuardRail {
   BasalRateUnits units = 1;
 
   // Default value
-  double defaultValue = 2;
+  FixedDecimal defaultValue = 2;
 
   // Device specific absolute bounds. Some pumps might have different increments for different ranges.
   repeated AbsoluteBounds absoluteBounds = 3;
@@ -140,7 +140,7 @@ message BasalRateMaximumGuardRail {
   BasalRateUnits units = 1;
 
   // Default value
-  double defaultValue = 2;
+  FixedDecimal defaultValue = 2;
 
   // Device specific absolute bounds
   AbsoluteBounds absoluteBounds = 3;
@@ -151,7 +151,7 @@ message BolusAmountMaximumGuardRail {
   BolusUnits units = 1;
 
   // Default value
-  double defaultValue = 2;
+  FixedDecimal defaultValue = 2;
 
   // Tidepool recommended bounds
   RecommendedBounds recommendedBounds = 3;
@@ -174,22 +174,30 @@ message CorrectionRangeGuardRail {
 // Closed range double interval
 message AbsoluteBounds {
   // Lower bound (inclusive)
-  double minimum = 1;
+  FixedDecimal minimum = 1;
 
   // Upper bound (inclusive)
-  double maximum = 2;
+  FixedDecimal maximum = 2;
 
   // Increment
-  double increment = 3;
+  FixedDecimal increment = 3;
 }
 
 // Closed range double interval
 message RecommendedBounds {
   // Lower bound (inclusive)
-  double minimum = 1;
+  FixedDecimal minimum = 1;
 
   // Upper bound (inclusive)
-  double maximum = 2;
+  FixedDecimal maximum = 2;
+}
+
+message FixedDecimal {
+  // The whole units of the amount
+  int64 units = 1;
+
+  // Number of nano (10^-9) units of the amount.
+  int32 nanos = 2;
 }
 
 enum BloodGlucoseUnits {

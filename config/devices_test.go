@@ -66,33 +66,35 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			})
 
 			t.Run("Guard Rails", func(t *testing.T) {
-				pointerFromFloat := func(i float64) *float64 { return &i }
+				fixedDecimalsAreEqual := func(a, b FixedDecimal) bool {
+					return a.Units == b.Units && a.Nanos == b.Nanos
+				}
 				isExpected := func(t *testing.T, result GuardRail, expected GuardRail) {
 					if result.Units != expected.Units {
 						t.Errorf("expected %v units got %v", expected.Units, result.Units)
 					}
 					if expected.DefaultValue != nil {
-						if result.DefaultValue == nil || *result.DefaultValue != *expected.DefaultValue {
+						if result.DefaultValue == nil || !fixedDecimalsAreEqual(*result.DefaultValue,*expected.DefaultValue) {
 							t.Errorf("expected %v got %v", *expected.DefaultValue, *result.DefaultValue)
 						}
 					}
 					if expected.AbsoluteBounds != nil {
 						for i, b := range expected.AbsoluteBounds {
-							expectedValue := expected.AbsoluteBounds[i].Increment
-							resultValue := b.Increment
-							if expectedValue != resultValue {
+							expectedValue := *expected.AbsoluteBounds[i].Increment
+							resultValue := *b.Increment
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
 								t.Errorf("expected %v got %v", expectedValue, resultValue)
 							}
 
 							expectedValue = *expected.AbsoluteBounds[i].Minimum
 							resultValue = *b.Minimum
-							if expectedValue != resultValue {
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
 								t.Errorf("expected %v got %v", expectedValue, resultValue)
 							}
 
 							expectedValue = *expected.AbsoluteBounds[i].Maximum
 							resultValue = *b.Maximum
-							if expectedValue != resultValue {
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
 								t.Errorf("expected %v got %v", expectedValue, resultValue)
 							}
 						}
@@ -100,13 +102,13 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					if expected.RecommendedBounds != nil {
 						expectedValue := *expected.RecommendedBounds.Minimum
 						resultValue := *result.RecommendedBounds.Minimum
-						if expectedValue != resultValue {
+						if !fixedDecimalsAreEqual(expectedValue, resultValue) {
 							t.Errorf("expected %v got %v", expectedValue, resultValue)
 						}
 
 						expectedValue = *expected.RecommendedBounds.Maximum
 						resultValue = *result.RecommendedBounds.Maximum
-						if expectedValue != resultValue {
+						if !fixedDecimalsAreEqual(expectedValue, resultValue) {
 							t.Errorf("expected %v got %v", expectedValue, resultValue)
 						}
 					}
@@ -118,16 +120,16 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(54),
-									Maximum: pointerFromFloat(180),
+									Minimum: &FixedDecimal{Units: 54},
+									Maximum: &FixedDecimal{Units: 180},
 								},
-								Increment: 1,
+								Increment: &FixedDecimal{Units: 1},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: pointerFromFloat(71),
-								Maximum: pointerFromFloat(119),
+								Minimum: &FixedDecimal{Units: 71},
+								Maximum: &FixedDecimal{Units: 119},
 							},
 						},
 					})
@@ -139,16 +141,16 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(10),
-									Maximum: pointerFromFloat(500),
+									Minimum: &FixedDecimal{Units: 10},
+									Maximum: &FixedDecimal{Units: 500},
 								},
-								Increment: 1,
+								Increment: &FixedDecimal{Units: 1},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: pointerFromFloat(16),
-								Maximum: pointerFromFloat(399),
+								Minimum: &FixedDecimal{Units: 16},
+								Maximum: &FixedDecimal{Units: 399},
 							},
 						},
 					})
@@ -156,14 +158,14 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Basal rates is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BasalRates, GuardRail{
 						Units:             "U/h",
-						DefaultValue:      pointerFromFloat(0.05),
+						DefaultValue:      &FixedDecimal{Nanos: 50000000},
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(0.05),
-									Maximum: pointerFromFloat(30.0),
+									Minimum: &FixedDecimal{Nanos: 50000000},
+									Maximum: &FixedDecimal{Units: 30},
 								},
-								Increment: 0.05,
+								Increment: &FixedDecimal{Nanos: 50000000},
 							},
 						},
 						RecommendedBounds: nil,
@@ -176,16 +178,16 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(1.0),
-									Maximum: pointerFromFloat(150.0),
+									Minimum: &FixedDecimal{Units: 1},
+									Maximum: &FixedDecimal{Units: 150},
 								},
-								Increment: 0.01,
+								Increment: &FixedDecimal{Nanos: 10000000},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: pointerFromFloat(3.01),
-								Maximum: pointerFromFloat(26.99),
+								Minimum: &FixedDecimal{Units: 3, Nanos: 10000000},
+								Maximum: &FixedDecimal{Units: 26, Nanos: 990000000},
 							},
 						},
 					})
@@ -193,14 +195,14 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Basal rate maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BasalRateMaximum, GuardRail{
 						Units:             "U/h",
-						DefaultValue:      pointerFromFloat(0.0),
+						DefaultValue:      &FixedDecimal{Units: 0},
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(0.0),
-									Maximum: pointerFromFloat(30.0),
+									Minimum: &FixedDecimal{Units: 0},
+									Maximum: &FixedDecimal{Units: 30},
 								},
-								Increment: 0.05,
+								Increment: &FixedDecimal{Nanos: 50000000},
 							},
 						},
 						RecommendedBounds: nil,
@@ -209,20 +211,20 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Bolus amount maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BolusAmountMaximum, GuardRail{
 						Units:             "U",
-						DefaultValue:      pointerFromFloat(0.0),
+						DefaultValue:      &FixedDecimal{Units: 0},
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(0.0),
-									Maximum: pointerFromFloat(30.0),
+									Minimum: &FixedDecimal{Units: 0},
+									Maximum: &FixedDecimal{Units: 30},
 								},
-								Increment: 0.05,
+								Increment: &FixedDecimal{Nanos: 50000000},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: pointerFromFloat(0.05),
-								Maximum: pointerFromFloat(19.95),
+								Minimum: &FixedDecimal{Nanos: 50000000},
+								Maximum: &FixedDecimal{Units: 19, Nanos: 950000000},
 							},
 						},
 					})
@@ -233,16 +235,16 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: pointerFromFloat(60.0),
-									Maximum: pointerFromFloat(180.0),
+									Minimum: &FixedDecimal{Units: 60},
+									Maximum: &FixedDecimal{Units: 180},
 								},
-								Increment: 1.0,
+								Increment: &FixedDecimal{Units: 1},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: pointerFromFloat(70.0),
-								Maximum: pointerFromFloat(120.0),
+								Minimum: &FixedDecimal{Units: 70},
+								Maximum: &FixedDecimal{Units: 120},
 							},
 						},
 					})

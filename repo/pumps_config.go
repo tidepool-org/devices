@@ -122,7 +122,10 @@ func PopulateBasalRatesFromConfig(cfg config.GuardRail, guardRail *api.BasalRate
 	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
-	guardRail.DefaultValue = *cfg.DefaultValue
+	guardRail.DefaultValue = &api.FixedDecimal{
+		Units: cfg.DefaultValue.Units,
+		Nanos: cfg.DefaultValue.Nanos,
+	}
 	guardRail.AbsoluteBounds = make([]*api.AbsoluteBounds, len(cfg.AbsoluteBounds))
 
 	if err := PopulateAbsoluteBoundsArrayFromConfig(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
@@ -160,7 +163,10 @@ func PopulateBasalRateMaximumFromConfig(cfg config.GuardRail, guardRail *api.Bas
 	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
-	guardRail.DefaultValue = *cfg.DefaultValue
+	guardRail.DefaultValue = &api.FixedDecimal{
+		Units: cfg.DefaultValue.Units,
+		Nanos: cfg.DefaultValue.Nanos,
+	}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
 
 	if err := PopulateAbsoluteBoundsFromFirstConfigValue(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
@@ -179,7 +185,10 @@ func PopulateBolusAmountMaximumFromConfig(cfg config.GuardRail, guardRail *api.B
 	}
 
 	guardRail.Units = api.BolusUnits_Units
-	guardRail.DefaultValue = *cfg.DefaultValue
+	guardRail.DefaultValue = &api.FixedDecimal{
+		Units: cfg.DefaultValue.Units,
+		Nanos: cfg.DefaultValue.Nanos,
+	}
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
 
@@ -217,8 +226,14 @@ func PopulateRecommendedBoundsFromConfig(bounds *config.RecommendedBounds, recom
 		return errors.New("recommended bounds cannot be empty")
 	}
 
-	recommendedBounds.Minimum = *bounds.Minimum
-	recommendedBounds.Maximum = *bounds.Maximum
+	recommendedBounds.Minimum = &api.FixedDecimal{
+		Units: bounds.Minimum.Units,
+		Nanos: bounds.Minimum.Nanos,
+	}
+	recommendedBounds.Maximum = &api.FixedDecimal{
+		Units: bounds.Maximum.Units,
+		Nanos: bounds.Maximum.Nanos,
+	}
 	return nil
 }
 
@@ -227,9 +242,18 @@ func PopulateAbsoluteBoundsFromFirstConfigValue(bounds []*config.AbsoluteBounds,
 		return errors.New("absolute bounds is empty")
 	}
 
-	absoluteBounds.Minimum = *bounds[0].Minimum
-	absoluteBounds.Maximum = *bounds[0].Maximum
-	absoluteBounds.Increment = bounds[0].Increment
+	absoluteBounds.Minimum = &api.FixedDecimal{
+		Units: bounds[0].Minimum.Units,
+		Nanos: bounds[0].Minimum.Nanos,
+	}
+	absoluteBounds.Maximum = &api.FixedDecimal{
+		Units: bounds[0].Maximum.Units,
+		Nanos: bounds[0].Maximum.Nanos,
+	}
+	absoluteBounds.Increment = &api.FixedDecimal{
+		Units: bounds[0].Increment.Units,
+		Nanos: bounds[0].Increment.Nanos,
+	}
 	return nil
 }
 
@@ -240,13 +264,21 @@ func PopulateAbsoluteBoundsArrayFromConfig(bounds []*config.AbsoluteBounds, abso
 
 	for i, b := range bounds {
 		result := &api.AbsoluteBounds{
-			Minimum:   *b.Minimum,
-			Maximum:   *b.Maximum,
-			Increment: b.Increment,
+			Minimum: &api.FixedDecimal{
+				Units: b.Minimum.Units,
+				Nanos: b.Minimum.Nanos,
+			},
+			Maximum: &api.FixedDecimal{
+				Units: b.Maximum.Units,
+				Nanos: b.Maximum.Nanos,
+			},
+			Increment: &api.FixedDecimal{
+				Units: b.Increment.Units,
+				Nanos: b.Increment.Nanos,
+			},
 		}
 		absoluteBounds[i] = result
 	}
 
 	return nil
 }
-
