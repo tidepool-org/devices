@@ -1,7 +1,11 @@
 package config
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
+	"strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"gopkg.in/yaml.v3"
@@ -44,7 +48,7 @@ type GuardRails struct {
 
 type GuardRail struct {
 	Units             string             `yaml:"units" validate:"required"`
-	DefaultValue      *float64           `yaml:"default"`
+	DefaultValue      *FixedDecimal      `yaml:"default"`
 	AbsoluteBounds    []*AbsoluteBounds  `yaml:"absolute_bounds" validate:"required"`
 	RecommendedBounds *RecommendedBounds `yaml:"recommended_bounds"`
 }
@@ -52,7 +56,7 @@ type GuardRail struct {
 type AbsoluteBounds struct {
 	Bounds `yaml:",inline"`
 
-	Increment float64 `yaml:"increment" validate:"gt=0"`
+	Increment *FixedDecimal `yaml:"increment" validate:"gt=0"`
 }
 
 type RecommendedBounds struct {
@@ -60,8 +64,82 @@ type RecommendedBounds struct {
 }
 
 type Bounds struct {
-	Minimum *float64 `yaml:"min"`
-	Maximum *float64 `yaml:"max"`
+	Minimum *FixedDecimal `yaml:"min"`
+	Maximum *FixedDecimal `yaml:"max"`
+}
+
+type FixedDecimal struct {
+	Units int64 `yaml:"units"`
+	Nanos int32 `yaml:"units"`
+}
+
+func (f *FixedDecimal) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var value string
+	if err := unmarshal(&value); err != nil {
+		return err
+	}
+
+	if err := ParseFixedDecimal(value, f); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ParseFixedDecimal(value string, decimal *FixedDecimal) error {
+	split := strings.Split(value, ".")
+	if len(split) != 1 && len(split) != 2 {
+		return errors.New(fmt.Sprintf("invalid fixed decimal value %v", value))
+	}
+
+	var units int64
+	var nanos int32
+	units, err := parseFixedDecimalUnits(split[0])
+	if err != nil {
+		return err
+	}
+	if len(split) > 1 {
+		nanos, err = parseFixedDecimalNanos(split[1])
+		if err != nil {
+			return err
+		}
+	}
+
+	decimal.Units = units
+	decimal.Nanos = nanos
+
+	if units < 0 {
+		decimal.Nanos = decimal.Nanos * -1
+	}
+
+	return nil
+}
+
+func parseFixedDecimalUnits(value string) (int64, error) {
+	if len(value) == 0 {
+		return 0, nil
+	}
+	val, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return val, nil
+}
+
+func parseFixedDecimalNanos(value string) (int32, error) {
+	if len(value) == 0 {
+		return 0, nil
+	}
+	if len(value) > 9 {
+		return 0, errors.New("nanos must be 9 digits or less")
+	}
+	// pad with trailing zeroes
+	value = value + strings.Repeat("0", 9-len(value))
+	val, err := strconv.ParseInt(value, 10, 32)
+	if err != nil {
+		return 0, err
+	}
+	return int32(val), nil
 }
 
 func NewDevicesConfig() *DevicesConfig {
