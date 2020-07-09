@@ -69,7 +69,7 @@ type Bounds struct {
 }
 
 type FixedDecimal struct {
-	Units int64 `yaml:"units"`
+	Units int32 `yaml:"units"`
 	Nanos int32 `yaml:"units"`
 }
 
@@ -92,8 +92,7 @@ func ParseFixedDecimal(value string, decimal *FixedDecimal) error {
 		return errors.New(fmt.Sprintf("invalid fixed decimal value %v", value))
 	}
 
-	var units int64
-	var nanos int32
+	var units, nanos int32
 	units, err := parseFixedDecimalUnits(split[0])
 	if err != nil {
 		return err
@@ -115,15 +114,15 @@ func ParseFixedDecimal(value string, decimal *FixedDecimal) error {
 	return nil
 }
 
-func parseFixedDecimalUnits(value string) (int64, error) {
+func parseFixedDecimalUnits(value string) (int32, error) {
 	if len(value) == 0 {
 		return 0, nil
 	}
-	val, err := strconv.ParseInt(value, 10, 64)
+	val, err := strconv.ParseInt(value, 10, 32)
 	if err != nil {
 		return 0, err
 	}
-	return val, nil
+	return int32(val), nil
 }
 
 func parseFixedDecimalNanos(value string) (int32, error) {
