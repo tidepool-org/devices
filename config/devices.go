@@ -69,8 +69,8 @@ type Bounds struct {
 }
 
 type FixedDecimal struct {
-	Units int32 `yaml:"units"`
-	Nanos int32 `yaml:"units"`
+	Units int32
+	Nanos int32
 }
 
 func (f *FixedDecimal) UnmarshalYAML(unmarshal func(interface{}) error) error {
