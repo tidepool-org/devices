@@ -1,7 +1,7 @@
 # Devices
 A GRPC service which provides info about Tidepool supported devices
 
-The service also exposes a REST interface which proxies the requests to the GRPC server using [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway).
+The service also exposes a REST interface that proxies the requests to the GRPC server using [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway).
 
 ## Development
 
