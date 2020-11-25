@@ -69,8 +69,8 @@ message Pump {
 }
 
 message GuardRails {
-  // Suspend threshold guard rail
-  SuspendThresholdGuardRail suspendThreshold = 1;
+  // Glucose safety limit guard rail
+  GlucoseSafetyLimitGuardRail glucoseSafetyLimit = 1;
 
   // Insulin sensitivity guard rail
   InsulinSensitivityGuardRail insulinSensitivity = 2;
@@ -91,7 +91,7 @@ message GuardRails {
   CorrectionRangeGuardRail correctionRange = 7;
 }
 
-message SuspendThresholdGuardRail {
+message GlucoseSafetyLimitGuardRail {
   // Blood glucose units
   BloodGlucoseUnits units = 1;
 

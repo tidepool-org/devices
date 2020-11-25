@@ -12,7 +12,7 @@ devices:
         - Insulet
       model: Omnipod Horizon
       guard_rails:
-        suspend_threshold:
+        glucose_safety_limit:
           units: "mg/dL"
           absolute_bounds:
             - increment: 1.0

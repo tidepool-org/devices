@@ -36,9 +36,9 @@ func PumpConfigToProto(cfg *config.Pump) (*api.Pump, error) {
 }
 
 func GuardRailsConfigToProto(cfg config.GuardRails) (guardRails api.GuardRails, err error) {
-	suspendThreshold := &api.SuspendThresholdGuardRail{}
-	guardRails.SuspendThreshold = suspendThreshold
-	if err = PopulateSuspendThresholdFromConfig(cfg.SuspendThreshold, suspendThreshold); err != nil {
+	glucodeSafetyLimit := &api.GlucoseSafetyLimitGuardRail{}
+	guardRails.GlucoseSafetyLimit = glucodeSafetyLimit
+	if err = PopulateGlucoseSafetyLimitFromConfig(cfg.GlucoseSafetyLimit, glucodeSafetyLimit); err != nil {
 		return
 	}
 	insulinSensitivity := &api.InsulinSensitivityGuardRail{}
@@ -75,7 +75,7 @@ func GuardRailsConfigToProto(cfg config.GuardRails) (guardRails api.GuardRails, 
 	return
 }
 
-func PopulateSuspendThresholdFromConfig(cfg config.GuardRail, guardRail *api.SuspendThresholdGuardRail) error {
+func PopulateGlucoseSafetyLimitFromConfig(cfg config.GuardRail, guardRail *api.GlucoseSafetyLimitGuardRail) error {
 	if cfg.Units != "mg/dL" {
 		return errors.New(fmt.Sprintf("unrecognized blood glucose unit %v", cfg.Units))
 	}

@@ -37,7 +37,7 @@ type Pump struct {
 }
 
 type GuardRails struct {
-	SuspendThreshold   GuardRail `yaml:"suspend_threshold" validate:"required"`
+	GlucoseSafetyLimit   GuardRail `yaml:"glucose_safety_limit" validate:"required"`
 	InsulinSensitivity GuardRail `yaml:"insulin_sensitivity" validate:"required"`
 	BasalRates         GuardRail `yaml:"basal_rates" validate:"required"`
 	CarbohydrateRatio  GuardRail `yaml:"carbohydrate_ratio" validate:"required"`

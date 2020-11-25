@@ -113,8 +113,8 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						}
 					}
 				}
-				t.Run("Suspend threshold is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.SuspendThreshold, GuardRail{
+				t.Run("Glucose safety limit is correct", func(t *testing.T) {
+					isExpected(t, omnipod.GuardRails.GlucoseSafetyLimit, GuardRail{
 						Units:             "mg/dL",
 						DefaultValue:      nil,
 						AbsoluteBounds:    []*AbsoluteBounds{
