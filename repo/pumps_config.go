@@ -36,9 +36,9 @@ func PumpConfigToProto(cfg *config.Pump) (*api.Pump, error) {
 }
 
 func GuardRailsConfigToProto(cfg config.GuardRails) (guardRails api.GuardRails, err error) {
-	suspendThreshold := &api.SuspendThresholdGuardRail{}
-	guardRails.SuspendThreshold = suspendThreshold
-	if err = PopulateSuspendThresholdFromConfig(cfg.SuspendThreshold, suspendThreshold); err != nil {
+	glucodeSafetyLimit := &api.GlucoseSafetyLimitGuardRail{}
+	guardRails.GlucoseSafetyLimit = glucodeSafetyLimit
+	if err = PopulateGlucoseSafetyLimitFromConfig(cfg.GlucoseSafetyLimit, glucodeSafetyLimit); err != nil {
 		return
 	}
 	insulinSensitivity := &api.InsulinSensitivityGuardRail{}
@@ -71,11 +71,21 @@ func GuardRailsConfigToProto(cfg config.GuardRails) (guardRails api.GuardRails, 
 	if err = PopulateCorrectionRangeFromConfig(cfg.CorrectionRange, correctionRange); err != nil {
 		return
 	}
+	preprandialCorrectionRange := &api.CorrectionRangeGuardRail{}
+	guardRails.PreprandialCorrectionRange = preprandialCorrectionRange
+	if err = PopulateCorrectionRangeFromConfig(cfg.PreprandialCorrectionRange, preprandialCorrectionRange); err != nil {
+		return
+	}
+	workoutCorrectionRange := &api.CorrectionRangeGuardRail{}
+	guardRails.WorkoutCorrectionRange = workoutCorrectionRange
+	if err = PopulateCorrectionRangeFromConfig(cfg.WorkoutCorrectionRange, workoutCorrectionRange); err != nil {
+		return
+	}
 
 	return
 }
 
-func PopulateSuspendThresholdFromConfig(cfg config.GuardRail, guardRail *api.SuspendThresholdGuardRail) error {
+func PopulateGlucoseSafetyLimitFromConfig(cfg config.GuardRail, guardRail *api.GlucoseSafetyLimitGuardRail) error {
 	if cfg.Units != "mg/dL" {
 		return errors.New(fmt.Sprintf("unrecognized blood glucose unit %v", cfg.Units))
 	}
@@ -208,14 +218,16 @@ func PopulateCorrectionRangeFromConfig(cfg config.GuardRail, guardRail *api.Corr
 	}
 
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
-	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
-
-	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
-		return err
-	}
 	if err := PopulateAbsoluteBoundsFromFirstConfigValue(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err
+	}
+
+	if cfg.RecommendedBounds != nil {
+		guardRail.RecommendedBounds = &api.RecommendedBounds{}
+		if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
+			return err
+		}
 	}
 
 	return nil

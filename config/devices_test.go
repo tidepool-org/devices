@@ -113,23 +113,23 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						}
 					}
 				}
-				t.Run("Suspend threshold is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.SuspendThreshold, GuardRail{
+				t.Run("Glucose safety limit is correct", func(t *testing.T) {
+					isExpected(t, omnipod.GuardRails.GlucoseSafetyLimit, GuardRail{
 						Units:             "mg/dL",
 						DefaultValue:      nil,
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: &FixedDecimal{Units: 54},
-									Maximum: &FixedDecimal{Units: 180},
+									Minimum: &FixedDecimal{Units: 67},
+									Maximum: &FixedDecimal{Units: 110},
 								},
 								Increment: &FixedDecimal{Units: 1},
 							},
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 71},
-								Maximum: &FixedDecimal{Units: 119},
+								Minimum: &FixedDecimal{Units: 74},
+								Maximum: &FixedDecimal{Units: 80},
 							},
 						},
 					})
@@ -178,7 +178,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: &FixedDecimal{Units: 1},
+									Minimum: &FixedDecimal{Units: 2},
 									Maximum: &FixedDecimal{Units: 150},
 								},
 								Increment: &FixedDecimal{Nanos: 10000000},
@@ -186,8 +186,8 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 3, Nanos: 10000000},
-								Maximum: &FixedDecimal{Units: 26, Nanos: 990000000},
+								Minimum: &FixedDecimal{Units: 4},
+								Maximum: &FixedDecimal{Units: 28},
 							},
 						},
 					})
@@ -195,11 +195,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Basal rate maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BasalRateMaximum, GuardRail{
 						Units:             "U/h",
-						DefaultValue:      &FixedDecimal{Units: 0},
+						DefaultValue:      &FixedDecimal{Units: 0, Nanos: 50000000},
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: &FixedDecimal{Units: 0},
+									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
 								Increment: &FixedDecimal{Nanos: 50000000},
@@ -211,11 +211,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Bolus amount maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BolusAmountMaximum, GuardRail{
 						Units:             "U",
-						DefaultValue:      &FixedDecimal{Units: 0},
+						DefaultValue:      &FixedDecimal{Units: 0, Nanos: 50000000},
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: &FixedDecimal{Units: 0},
+									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
 								Increment: &FixedDecimal{Nanos: 50000000},
@@ -223,7 +223,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Nanos: 50000000},
+								Minimum: &FixedDecimal{Units: 0, Nanos: 100000000},
 								Maximum: &FixedDecimal{Units: 19, Nanos: 950000000},
 							},
 						},
@@ -235,7 +235,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds:    []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds:    Bounds{
-									Minimum: &FixedDecimal{Units: 60},
+									Minimum: &FixedDecimal{Units: 87},
 									Maximum: &FixedDecimal{Units: 180},
 								},
 								Increment: &FixedDecimal{Units: 1},
@@ -243,8 +243,8 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 70},
-								Maximum: &FixedDecimal{Units: 120},
+								Minimum: &FixedDecimal{Units: 101},
+								Maximum: &FixedDecimal{Units: 115},
 							},
 						},
 					})
