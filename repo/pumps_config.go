@@ -71,6 +71,16 @@ func GuardRailsConfigToProto(cfg config.GuardRails) (guardRails api.GuardRails, 
 	if err = PopulateCorrectionRangeFromConfig(cfg.CorrectionRange, correctionRange); err != nil {
 		return
 	}
+	preprandialCorrectionRange := &api.CorrectionRangeGuardRail{}
+	guardRails.PreprandialCorrectionRange = preprandialCorrectionRange
+	if err = PopulateCorrectionRangeFromConfig(cfg.PreprandialCorrectionRange, preprandialCorrectionRange); err != nil {
+		return
+	}
+	workoutCorrectionRange := &api.CorrectionRangeGuardRail{}
+	guardRails.WorkoutCorrectionRange = workoutCorrectionRange
+	if err = PopulateCorrectionRangeFromConfig(cfg.WorkoutCorrectionRange, workoutCorrectionRange); err != nil {
+		return
+	}
 
 	return
 }
@@ -208,14 +218,16 @@ func PopulateCorrectionRangeFromConfig(cfg config.GuardRail, guardRail *api.Corr
 	}
 
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
-	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
-
-	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
-		return err
-	}
 	if err := PopulateAbsoluteBoundsFromFirstConfigValue(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err
+	}
+
+	if cfg.RecommendedBounds != nil {
+		guardRail.RecommendedBounds = &api.RecommendedBounds{}
+		if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
+			return err
+		}
 	}
 
 	return nil

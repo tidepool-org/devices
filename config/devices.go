@@ -37,13 +37,15 @@ type Pump struct {
 }
 
 type GuardRails struct {
-	GlucoseSafetyLimit   GuardRail `yaml:"glucose_safety_limit" validate:"required"`
-	InsulinSensitivity GuardRail `yaml:"insulin_sensitivity" validate:"required"`
-	BasalRates         GuardRail `yaml:"basal_rates" validate:"required"`
-	CarbohydrateRatio  GuardRail `yaml:"carbohydrate_ratio" validate:"required"`
-	BasalRateMaximum   GuardRail `yaml:"basal_rate_maximum" validate:"required"`
-	BolusAmountMaximum GuardRail `yaml:"bolus_amount_maximum" validate:"required"`
-	CorrectionRange    GuardRail `yaml:"correction_range" validate:"required"`
+	GlucoseSafetyLimit         GuardRail `yaml:"glucose_safety_limit" validate:"required"`
+	InsulinSensitivity         GuardRail `yaml:"insulin_sensitivity" validate:"required"`
+	BasalRates                 GuardRail `yaml:"basal_rates" validate:"required"`
+	CarbohydrateRatio          GuardRail `yaml:"carbohydrate_ratio" validate:"required"`
+	BasalRateMaximum           GuardRail `yaml:"basal_rate_maximum" validate:"required"`
+	BolusAmountMaximum         GuardRail `yaml:"bolus_amount_maximum" validate:"required"`
+	CorrectionRange            GuardRail `yaml:"correction_range" validate:"required"`
+	PreprandialCorrectionRange GuardRail `yaml:"preprandial_correction_range" validate:"required"`
+	WorkoutCorrectionRange     GuardRail `yaml:"workout_correction_range" validate:"required"`
 }
 
 type GuardRail struct {

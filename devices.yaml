@@ -16,11 +16,11 @@ devices:
           units: "mg/dL"
           absolute_bounds:
             - increment: 1.0
-              min: 54
-              max: 180
+              min: 67
+              max: 110
           recommended_bounds:
-            min: 71
-            max: 119
+            min: 74
+            max: 80
         insulin_sensitivity:
           units: "mg/dL"
           absolute_bounds:
@@ -41,34 +41,46 @@ devices:
           units: "g/U"
           absolute_bounds:
             - increment: 0.01
-              min: 1.0
+              min: 2.0
               max: 150.0
           recommended_bounds:
-            min: 3.01
-            max: 26.99
+            min: 4.00
+            max: 28.00
         basal_rate_maximum:
           units: "U/h"
-          default: 0.0
+          default: 0.05
           absolute_bounds:
             - increment: 0.05
-              min: 0.0
+              min: 0.05
               max: 30.0
         bolus_amount_maximum:
           units: "U"
-          default: 0.0
+          default: 0.05
           absolute_bounds:
             - increment: 0.05
-              min: 0
+              min: 0.05
               max: 30.0
           recommended_bounds:
-            min: 0.05
+            min: 0.10
             max: 19.95
         correction_range:
           units: "mg/dL"
           absolute_bounds:
             - increment: 1.0
-              min: 60
+              min: 87
               max: 180
           recommended_bounds:
-            min: 70
-            max: 120
+            min: 101
+            max: 115
+        preprandial_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 67
+              max: 130
+        workout_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 85
+              max: 250

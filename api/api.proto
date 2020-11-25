@@ -89,6 +89,12 @@ message GuardRails {
 
   // Correction range guard rail
   CorrectionRangeGuardRail correctionRange = 7;
+
+  // Preprandial correction range guard rail
+  CorrectionRangeGuardRail preprandialCorrectionRange = 8;
+
+  // Workout correction range guard rail
+  CorrectionRangeGuardRail workoutCorrectionRange = 9;
 }
 
 message GlucoseSafetyLimitGuardRail {
