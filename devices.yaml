@@ -82,5 +82,5 @@ devices:
           units: "mg/dL"
           absolute_bounds:
             - increment: 1.0
-              min: 85
+              min: 87
               max: 250

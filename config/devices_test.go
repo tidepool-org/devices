@@ -249,6 +249,34 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 					})
 				})
+				t.Run("Workout correction range is correct", func(t *testing.T) {
+					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
+						Units:             "mg/dL",
+						AbsoluteBounds:    []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds:    Bounds{
+									Minimum: &FixedDecimal{Units: 87},
+									Maximum: &FixedDecimal{Units: 250},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+					})
+				})
+				t.Run("Pre-meal correction range is correct", func(t *testing.T) {
+					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
+						Units:             "mg/dL",
+						AbsoluteBounds:    []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds:    Bounds{
+									Minimum: &FixedDecimal{Units: 87},
+									Maximum: &FixedDecimal{Units: 180},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+					})
+				})
 			})
 
 		})
