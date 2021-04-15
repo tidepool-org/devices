@@ -243,7 +243,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 101},
+								Minimum: &FixedDecimal{Units: 100},
 								Maximum: &FixedDecimal{Units: 115},
 							},
 						},

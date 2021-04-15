@@ -70,7 +70,7 @@ devices:
               min: 87
               max: 180
           recommended_bounds:
-            min: 101
+            min: 100
             max: 115
         preprandial_correction_range:
           units: "mg/dL"
