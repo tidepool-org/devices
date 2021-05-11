@@ -74,7 +74,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						t.Errorf("expected %v units got %v", expected.Units, result.Units)
 					}
 					if expected.DefaultValue != nil {
-						if result.DefaultValue == nil || !fixedDecimalsAreEqual(*result.DefaultValue,*expected.DefaultValue) {
+						if result.DefaultValue == nil || !fixedDecimalsAreEqual(*result.DefaultValue, *expected.DefaultValue) {
 							t.Errorf("expected %v got %v", *expected.DefaultValue, *result.DefaultValue)
 						}
 					}
@@ -115,11 +115,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				}
 				t.Run("Glucose safety limit is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.GlucoseSafetyLimit, GuardRail{
-						Units:             "mg/dL",
-						DefaultValue:      nil,
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units:        "mg/dL",
+						DefaultValue: nil,
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 67},
 									Maximum: &FixedDecimal{Units: 110},
 								},
@@ -136,11 +136,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Insulin sensitivity is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.InsulinSensitivity, GuardRail{
-						Units:             "mg/dL",
-						DefaultValue:      nil,
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units:        "mg/dL",
+						DefaultValue: nil,
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 10},
 									Maximum: &FixedDecimal{Units: 500},
 								},
@@ -157,11 +157,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Basal rates is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BasalRates, GuardRail{
-						Units:             "U/h",
-						DefaultValue:      &FixedDecimal{Nanos: 50000000},
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units:        "U/h",
+						DefaultValue: &FixedDecimal{Nanos: 50000000},
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
@@ -173,11 +173,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Carbohydrate ratio is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.CarbohydrateRatio, GuardRail{
-						Units:             "g/U",
-						DefaultValue:      nil,
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units:        "g/U",
+						DefaultValue: nil,
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 2},
 									Maximum: &FixedDecimal{Units: 150},
 								},
@@ -194,11 +194,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Basal rate maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BasalRateMaximum, GuardRail{
-						Units:             "U/h",
-						DefaultValue:      &FixedDecimal{Units: 0, Nanos: 50000000},
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units:        "U/h",
+						DefaultValue: &FixedDecimal{Units: 0, Nanos: 50000000},
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
@@ -210,11 +210,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Bolus amount maximum is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.BolusAmountMaximum, GuardRail{
-						Units:             "U",
-						DefaultValue:      &FixedDecimal{Units: 0, Nanos: 50000000},
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units: "U",
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
@@ -231,10 +230,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Correction range is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.CorrectionRange, GuardRail{
-						Units:             "mg/dL",
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units: "mg/dL",
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 87},
 									Maximum: &FixedDecimal{Units: 180},
 								},
@@ -251,10 +250,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Workout correction range is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
-						Units:             "mg/dL",
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units: "mg/dL",
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 87},
 									Maximum: &FixedDecimal{Units: 250},
 								},
@@ -265,10 +264,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Pre-meal correction range is correct", func(t *testing.T) {
 					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
-						Units:             "mg/dL",
-						AbsoluteBounds:    []*AbsoluteBounds{
+						Units: "mg/dL",
+						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
-								Bounds:    Bounds{
+								Bounds: Bounds{
 									Minimum: &FixedDecimal{Units: 87},
 									Maximum: &FixedDecimal{Units: 180},
 								},
