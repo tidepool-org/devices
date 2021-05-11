@@ -55,7 +55,6 @@ devices:
               max: 30.0
         bolus_amount_maximum:
           units: "U"
-          default: 0.05
           absolute_bounds:
             - increment: 0.05
               min: 0.05
