@@ -9,7 +9,7 @@ BINARY=$(DIST)/$(SERVICE)
 DOCKER_REPOSITORY=tidepool/$(SERVICE)
 
 all: test build
-ci:	test docker-build docker-push-ci
+ci:	test docker-login docker-build docker-push-ci
 dist:
 		mkdir -p dist
 generate:
@@ -43,7 +43,7 @@ docker-login:
 		@echo "$(DOCKER_PASSWORD)" | docker login --username "$(DOCKER_USERNAME)" --password-stdin
 docker-build:
 		docker build -t $(SERVICE) .
-docker-push-ci:	docker-login
+docker-push-ci:
 ifdef TRAVIS_BRANCH
 ifdef TRAVIS_COMMIT
 ifdef TRAVIS_PULL_REQUEST_BRANCH
