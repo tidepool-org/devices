@@ -156,14 +156,11 @@ message BolusAmountMaximumGuardRail {
   // Bolus units
   BolusUnits units = 1;
 
-  // Default value
-  FixedDecimal defaultValue = 2;
-
   // Tidepool recommended bounds
-  RecommendedBounds recommendedBounds = 3;
+  RecommendedBounds recommendedBounds = 2;
 
   // Device specific absolute bounds
-  AbsoluteBounds absoluteBounds = 4;
+  AbsoluteBounds absoluteBounds = 3;
 }
 
 message CorrectionRangeGuardRail {

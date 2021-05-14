@@ -2,6 +2,7 @@ package repo
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/tidepool-org/devices/api"
 	"github.com/tidepool-org/devices/config"
@@ -128,7 +129,7 @@ func PopulateBasalRatesFromConfig(cfg config.GuardRail, guardRail *api.BasalRate
 		return errors.New(fmt.Sprintf("unrecognized basal rate unit %v", cfg.Units))
 	}
 	if cfg.DefaultValue == nil {
-		return errors.New(fmt.Sprintf("defaul value cannot be nil"))
+		return errors.New(fmt.Sprintf("default value cannot be nil"))
 	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
@@ -169,7 +170,7 @@ func PopulateBasalRateMaximumFromConfig(cfg config.GuardRail, guardRail *api.Bas
 		return errors.New(fmt.Sprintf("unrecognized basal rate unit %v", cfg.Units))
 	}
 	if cfg.DefaultValue == nil {
-		return errors.New(fmt.Sprintf("defaul value cannot be nil"))
+		return errors.New(fmt.Sprintf("default value cannot be nil"))
 	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
@@ -190,15 +191,8 @@ func PopulateBolusAmountMaximumFromConfig(cfg config.GuardRail, guardRail *api.B
 	if cfg.Units != "U" {
 		return errors.New(fmt.Sprintf("unrecognized bolus amount unit %v", cfg.Units))
 	}
-	if cfg.DefaultValue == nil {
-		return errors.New(fmt.Sprintf("defaul value cannot be nil"))
-	}
 
 	guardRail.Units = api.BolusUnits_Units
-	guardRail.DefaultValue = &api.FixedDecimal{
-		Units: cfg.DefaultValue.Units,
-		Nanos: cfg.DefaultValue.Nanos,
-	}
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
 
