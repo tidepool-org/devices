@@ -153,14 +153,16 @@ message BasalRateMaximumGuardRail {
 }
 
 message BolusAmountMaximumGuardRail {
+  reserved 2;
+
   // Bolus units
   BolusUnits units = 1;
 
   // Tidepool recommended bounds
-  RecommendedBounds recommendedBounds = 2;
+  RecommendedBounds recommendedBounds = 3;
 
   // Device specific absolute bounds
-  AbsoluteBounds absoluteBounds = 3;
+  AbsoluteBounds absoluteBounds = 4;
 }
 
 message CorrectionRangeGuardRail {
