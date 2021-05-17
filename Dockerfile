@@ -1,7 +1,7 @@
 FROM golang:1.14.4-alpine AS build
 
-WORKDIR /go/src/github.com/tidepool-org/devices 
-COPY . . 
+WORKDIR /go/src/github.com/tidepool-org/devices
+COPY . .
 
 RUN apk --no-cache add git make && \
     make build
