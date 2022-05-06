@@ -44,7 +44,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Display name equals 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if coastal.DisplayName != expected {
-					t.Errorf("expected display name to equal %v, but got %v", expected, omnipod.DisplayName)
+					t.Errorf("expected display name to equal %v, but got %v", expected, coastal.DisplayName)
 					t.FailNow()
 				}
 			})
@@ -52,7 +52,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Model equals 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if coastal.Model != expected {
-					t.Errorf("expected model to equal %v, but got %v", expected, omnipod.Model)
+					t.Errorf("expected model to equal %v, but got %v", expected, coastal.Model)
 					t.FailNow()
 				}
 			})
@@ -60,7 +60,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Manufacturers consists of 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if len(coastal.Manufacturers) != 1 || coastal.Manufacturers[0] != expected {
-					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(omnipod.Manufacturers, ","))
+					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(coastal.Manufacturers, ","))
 					t.FailNow()
 				}
 			})
@@ -114,7 +114,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					}
 				}
 				t.Run("Glucose safety limit is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.GlucoseSafetyLimit, GuardRail{
+					isExpected(t, coastal.GuardRails.GlucoseSafetyLimit, GuardRail{
 						Units:        "mg/dL",
 						DefaultValue: nil,
 						AbsoluteBounds: []*AbsoluteBounds{
@@ -135,7 +135,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Insulin sensitivity is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.InsulinSensitivity, GuardRail{
+					isExpected(t, coastal.GuardRails.InsulinSensitivity, GuardRail{
 						Units:        "mg/dL",
 						DefaultValue: nil,
 						AbsoluteBounds: []*AbsoluteBounds{
@@ -156,7 +156,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Basal rates is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.BasalRates, GuardRail{
+					isExpected(t, coastal.GuardRails.BasalRates, GuardRail{
 						Units:        "U/h",
 						DefaultValue: &FixedDecimal{Nanos: 50000000},
 						AbsoluteBounds: []*AbsoluteBounds{
@@ -172,7 +172,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Carbohydrate ratio is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.CarbohydrateRatio, GuardRail{
+					isExpected(t, coastal.GuardRails.CarbohydrateRatio, GuardRail{
 						Units:        "g/U",
 						DefaultValue: nil,
 						AbsoluteBounds: []*AbsoluteBounds{
@@ -193,7 +193,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Basal rate maximum is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.BasalRateMaximum, GuardRail{
+					isExpected(t, coastal.GuardRails.BasalRateMaximum, GuardRail{
 						Units:        "U/h",
 						DefaultValue: &FixedDecimal{Units: 0, Nanos: 50000000},
 						AbsoluteBounds: []*AbsoluteBounds{
@@ -209,7 +209,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Bolus amount maximum is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.BolusAmountMaximum, GuardRail{
+					isExpected(t, coastal.GuardRails.BolusAmountMaximum, GuardRail{
 						Units: "U",
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
@@ -229,7 +229,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Correction range is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.CorrectionRange, GuardRail{
+					isExpected(t, coastal.GuardRails.CorrectionRange, GuardRail{
 						Units: "mg/dL",
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
@@ -249,7 +249,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Workout correction range is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
+					isExpected(t, coastal.GuardRails.WorkoutCorrectionRange, GuardRail{
 						Units: "mg/dL",
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
@@ -263,7 +263,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Pre-meal correction range is correct", func(t *testing.T) {
-					isExpected(t, omnipod.GuardRails.WorkoutCorrectionRange, GuardRail{
+					isExpected(t, coastal.GuardRails.WorkoutCorrectionRange, GuardRail{
 						Units: "mg/dL",
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
