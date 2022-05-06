@@ -6,6 +6,11 @@ devices:
         - Dexcom
       model: G6
   pumps:
+    - id: e4a46eda-02f9-4faf-b8f4-ef7b40d02e4f
+      display_name: Coastal
+      manufacturers:
+        - Coastal
+      model: Coastal
     - id: 6678c377-928c-49b3-84c1-19e2dafaff8d
       display_name: Omnipod Horizon
       manufacturers:
