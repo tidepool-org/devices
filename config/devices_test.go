@@ -20,46 +20,46 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.FailNow()
 		}
 
-		t.Run("Omnipod Horizon", func(t *testing.T) {
-			expectedOmnipodId := "6678c377-928c-49b3-84c1-19e2dafaff8d"
-			var omnipod *Pump
+		t.Run("Coastal", func(t *testing.T) {
+			expectedCoastalId := "e4a46eda-02f9-4faf-b8f4-ef7b40d02e4f"
+			var coastal *Pump
 			for _, p := range cfg.Devices.Pumps {
-				if p.ID == expectedOmnipodId {
-					omnipod = p
+				if p.ID == expectedCoastalId {
+					coastal = p
 					break
 				}
 			}
 
 			t.Run("Exists", func(t *testing.T) {
-				if omnipod == nil {
-					t.Errorf("expected omnipod pod with id %v, but did not find it in config", expectedOmnipodId)
+				if coastal == nil {
+					t.Errorf("expected coastal pump with id %v, but did not find it in config", expectedCoastalId)
 					t.FailNow()
 				}
 			})
 
-			if omnipod == nil {
+			if coastal == nil {
 				t.FailNow()
 			}
 
-			t.Run("Display name equals 'Omnipod Horizon'", func(t *testing.T) {
-				expected := "Omnipod Horizon"
-				if omnipod.DisplayName != expected {
+			t.Run("Display name equals 'Coastal'", func(t *testing.T) {
+				expected := "Coastal"
+				if coastal.DisplayName != expected {
 					t.Errorf("expected display name to equal %v, but got %v", expected, omnipod.DisplayName)
 					t.FailNow()
 				}
 			})
 
-			t.Run("Model equals 'Omnipod Horizon'", func(t *testing.T) {
-				expected := "Omnipod Horizon"
-				if omnipod.Model != expected {
+			t.Run("Model equals 'Coastal'", func(t *testing.T) {
+				expected := "Coastal"
+				if coastal.Model != expected {
 					t.Errorf("expected model to equal %v, but got %v", expected, omnipod.Model)
 					t.FailNow()
 				}
 			})
 
-			t.Run("Manufacturers consists of 'Insulet'", func(t *testing.T) {
-				expected := "Insulet"
-				if len(omnipod.Manufacturers) != 1 || omnipod.Manufacturers[0] != expected {
+			t.Run("Manufacturers consists of 'Coastal'", func(t *testing.T) {
+				expected := "Coastal"
+				if len(coastal.Manufacturers) != 1 || coastal.Manufacturers[0] != expected {
 					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(omnipod.Manufacturers, ","))
 					t.FailNow()
 				}
@@ -214,7 +214,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{
-									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
+									Minimum: &FixedDecimal{Units: 0, Nanos: 200000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
 								Increment: &FixedDecimal{Nanos: 50000000},
@@ -222,7 +222,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 0, Nanos: 100000000},
+								Minimum: &FixedDecimal{Units: 0, Nanos: 200000000},
 								Maximum: &FixedDecimal{Units: 19, Nanos: 950000000},
 							},
 						},
