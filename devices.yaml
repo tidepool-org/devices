@@ -60,7 +60,7 @@ devices:
               min: 0.05
               max: 30.0
           recommended_bounds:
-            min: 0.05
+            min: 0.10
             max: 19.95
         correction_range:
           units: "mg/dL"
@@ -129,7 +129,7 @@ devices:
           absolute_bounds:
             - increment: 0.05
               min: 0.05
-              max: 25.0
+              max: 30.0
         bolus_amount_maximum:
           units: "U"
           absolute_bounds:
