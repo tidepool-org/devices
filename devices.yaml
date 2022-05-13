@@ -83,3 +83,80 @@ devices:
             - increment: 1.0
               min: 87
               max: 250
+    - id: e4a46eda-02f9-4faf-b8f4-ef7b40d02e4f
+      display_name: Coastal
+      manufacturers:
+        - Coastal
+      model: Coastal
+      guard_rails:
+        glucose_safety_limit:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 67
+              max: 110
+          recommended_bounds:
+            min: 74
+            max: 80
+        insulin_sensitivity:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 10
+              max: 500
+          recommended_bounds:
+            min: 16
+            max: 399
+        basal_rates:
+          units: "U/h"
+          default: 0.05
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.05
+              max: 30.0
+        carbohydrate_ratio:
+          units: "g/U"
+          absolute_bounds:
+            - increment: 0.01
+              min: 2.0
+              max: 150.0
+          recommended_bounds:
+            min: 4.00
+            max: 28.00
+        basal_rate_maximum:
+          units: "U/h"
+          default: 0.05
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.05
+              max: 30.0
+        bolus_amount_maximum:
+          units: "U"
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.20
+              max: 30.0
+          recommended_bounds:
+            min: 0.20
+            max: 19.95
+        correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 87
+              max: 180
+          recommended_bounds:
+            min: 100
+            max: 115
+        preprandial_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 67
+              max: 130
+        workout_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 87
+              max: 250
