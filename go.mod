@@ -1,6 +1,6 @@
 module github.com/tidepool-org/devices
 
-go 1.21
+go 1.22
 
 require (
 	github.com/go-playground/validator/v10 v10.17.0
@@ -36,3 +36,6 @@ require (
 )
 
 replace github.com/tidepool-org/devices/api => ./api
+
+// Resolve GO-2024-2611
+replace google.golang.org/protobuf v1.32.0 => google.golang.org/protobuf v1.33.0

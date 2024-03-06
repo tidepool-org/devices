@@ -1,6 +1,6 @@
 module github.com/tidepool-org/devices/api
 
-go 1.21
+go 1.22
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
