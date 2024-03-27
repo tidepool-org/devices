@@ -17,3 +17,6 @@ require (
 	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240116215550-a9fa1716bcac // indirect
 )
+
+// Resolve GO-2024-2611
+replace google.golang.org/protobuf v1.32.0 => google.golang.org/protobuf v1.33.0
