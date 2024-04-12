@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"github.com/go-playground/validator/v10"
-	"github.com/tidepool-org/devices/config"
-	"github.com/tidepool-org/devices/repo"
-	"github.com/tidepool-org/devices/server"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/tidepool-org/devices/config"
+	"github.com/tidepool-org/devices/repo"
+	"github.com/tidepool-org/devices/server"
 )
 
 func main() {

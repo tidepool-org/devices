@@ -1,16 +1,9 @@
-sudo: false
-
-env:
-  - GO111MODULE=on
+dist: jammy
 
 language: go
 
 go:
-  - 1.14.4
-
-script:
-  - make test
-  - ./artifact.sh
+  - 1.22.2
 
 services:
   - docker
@@ -18,3 +11,7 @@ services:
 cache:
   directories:
     - $HOME/.cache/go-build
+
+script:
+  - make test
+  - ./artifact.sh

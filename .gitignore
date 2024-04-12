@@ -1,1 +1,8 @@
 dist/
+
+artifact_docker.sh
+
+.vscode/
+*.envrc
+*.env
+*.test
