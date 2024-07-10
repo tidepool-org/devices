@@ -1,4 +1,6 @@
+tools/bin
 dist/
+api/google
 
 artifact_docker.sh
 

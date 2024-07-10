@@ -138,6 +138,7 @@ func PopulateBasalRatesFromConfig(cfg config.GuardRail, guardRail *api.BasalRate
 		Nanos: cfg.DefaultValue.Nanos,
 	}
 	guardRail.AbsoluteBounds = make([]*api.AbsoluteBounds, len(cfg.AbsoluteBounds))
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateAbsoluteBoundsArrayFromConfig(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err

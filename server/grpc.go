@@ -26,6 +26,8 @@ type Params struct {
 }
 
 type GrpcServer struct {
+	api.UnimplementedDevicesServer
+
 	grpcServer   *grpc.Server
 	healthServer *health.Server
 

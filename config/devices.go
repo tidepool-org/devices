@@ -53,6 +53,7 @@ type GuardRail struct {
 	DefaultValue      *FixedDecimal      `yaml:"default"`
 	AbsoluteBounds    []*AbsoluteBounds  `yaml:"absolute_bounds" validate:"required"`
 	RecommendedBounds *RecommendedBounds `yaml:"recommended_bounds"`
+	MaxSegments       *int32             `yaml:"max_segments"`
 }
 
 type AbsoluteBounds struct {
