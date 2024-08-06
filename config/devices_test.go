@@ -485,7 +485,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{
-									Minimum: &FixedDecimal{Units: 0, Nanos: 200000000},
+									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
 									Maximum: &FixedDecimal{Units: 30},
 								},
 								Increment: &FixedDecimal{Nanos: 50000000},
@@ -493,7 +493,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 						},
 						RecommendedBounds: &RecommendedBounds{
 							Bounds{
-								Minimum: &FixedDecimal{Units: 0, Nanos: 200000000},
+								Minimum: &FixedDecimal{Units: 0, Nanos: 100000000},
 								Maximum: &FixedDecimal{Units: 19, Nanos: 950000000},
 							},
 						},
