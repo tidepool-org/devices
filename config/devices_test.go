@@ -13,7 +13,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 		t.FailNow()
 	}
 
-	t.Run("Config has three pumps", func(t *testing.T) {
+	t.Run("Config has two pumps", func(t *testing.T) {
 		pumpCount := len(cfg.Devices.Pumps)
 		if pumpCount != 2 {
 			t.Errorf("expected 2 pump in config, got %v", pumpCount)
@@ -400,9 +400,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Insulin sensitivity is correct", func(t *testing.T) {
+					maxSegments := int32(48)
 					isExpected(t, palmtree.GuardRails.InsulinSensitivity, GuardRail{
 						Units:        "mg/dL",
 						DefaultValue: nil,
+						MaxSegments:  &maxSegments,
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{
@@ -439,9 +441,11 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Carbohydrate ratio is correct", func(t *testing.T) {
+					maxSegments := int32(48)
 					isExpected(t, palmtree.GuardRails.CarbohydrateRatio, GuardRail{
 						Units:        "g/U",
 						DefaultValue: nil,
+						MaxSegments:  &maxSegments,
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{
@@ -496,8 +500,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 					})
 				})
 				t.Run("Correction range is correct", func(t *testing.T) {
+					maxSegments := int32(48)
 					isExpected(t, palmtree.GuardRails.CorrectionRange, GuardRail{
-						Units: "mg/dL",
+						Units:       "mg/dL",
+						MaxSegments: &maxSegments,
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{

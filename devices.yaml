@@ -100,6 +100,7 @@ devices:
             max: 80
         insulin_sensitivity:
           units: "mg/dL"
+          max_segments: 48
           absolute_bounds:
             - increment: 1.0
               min: 5
@@ -117,6 +118,7 @@ devices:
               max: 30.0
         carbohydrate_ratio:
           units: "g/U"
+          max_segments: 48
           absolute_bounds:
             - increment: 0.01
               min: 2.0
@@ -142,6 +144,7 @@ devices:
             max: 19.95
         correction_range:
           units: "mg/dL"
+          max_segments: 48
           absolute_bounds:
             - increment: 1.0
               min: 87
