@@ -113,6 +113,7 @@ func PopulateInsulinSensitivityFromConfig(cfg config.GuardRail, guardRail *api.I
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
 		return err
@@ -155,6 +156,7 @@ func PopulateCarbohydrateRatioFromConfig(cfg config.GuardRail, guardRail *api.Ca
 	guardRail.Units = api.CarbohydrateRatioUnits_GramsPerUnit
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
 		return err
@@ -214,6 +216,8 @@ func PopulateCorrectionRangeFromConfig(cfg config.GuardRail, guardRail *api.Corr
 
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
+
 	if err := PopulateAbsoluteBoundsFromFirstConfigValue(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err
 	}
