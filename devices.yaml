@@ -120,7 +120,7 @@ devices:
           units: "g/U"
           max_segments: 48
           absolute_bounds:
-            - increment: 0.01
+            - increment: 0.1
               min: 2.0
               max: 150.0
           recommended_bounds:
