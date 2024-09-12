@@ -425,9 +425,8 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				t.Run("Basal rates is correct", func(t *testing.T) {
 					maxSegments := int32(24)
 					isExpected(t, palmtree.GuardRails.BasalRates, GuardRail{
-						Units:        "U/h",
-						DefaultValue: &FixedDecimal{Nanos: 50000000},
-						MaxSegments:  &maxSegments,
+						Units:       "U/h",
+						MaxSegments: &maxSegments,
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
 								Bounds: Bounds{

@@ -110,7 +110,6 @@ devices:
             max: 399
         basal_rates:
           units: "U/h"
-          default: 0.05
           max_segments: 24
           absolute_bounds:
             - increment: 0.05

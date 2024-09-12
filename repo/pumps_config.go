@@ -129,14 +129,13 @@ func PopulateBasalRatesFromConfig(cfg config.GuardRail, guardRail *api.BasalRate
 	if cfg.Units != "U/h" {
 		return errors.New(fmt.Sprintf("unrecognized basal rate unit %v", cfg.Units))
 	}
-	if cfg.DefaultValue == nil {
-		return errors.New(fmt.Sprintf("default value cannot be nil"))
-	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
-	guardRail.DefaultValue = &api.FixedDecimal{
-		Units: cfg.DefaultValue.Units,
-		Nanos: cfg.DefaultValue.Nanos,
+	if cfg.DefaultValue != nil {
+		guardRail.DefaultValue = &api.FixedDecimal{
+			Units: cfg.DefaultValue.Units,
+			Nanos: cfg.DefaultValue.Nanos,
+		}
 	}
 	guardRail.AbsoluteBounds = make([]*api.AbsoluteBounds, len(cfg.AbsoluteBounds))
 	guardRail.MaxSegments = cfg.MaxSegments
