@@ -1,5 +1,10 @@
 devices:
   cgms:
+    - id: c97bd194-5e5e-44c1-9629-4cb87be1a4c9
+      display_name: Mock CGM
+      manufacturers:
+        - Tidepool
+      model: Mock
     - id: d25c3f1b-a2e8-44e2-b3a3-fd07806fc245
       display_name: Dexcom G6
       manufacturers:

@@ -553,12 +553,59 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 		})
 	})
 
-	t.Run("Config has a single cgm", func(t *testing.T) {
+	t.Run("Config has a two cgms", func(t *testing.T) {
 		cgmCount := len(cfg.Devices.CGMs)
-		if cgmCount != 1 {
+		if cgmCount != 2 {
 			t.Errorf("expected 1 cgm in config, got %v", cgmCount)
 			t.FailNow()
 		}
+
+		t.Run("Mock CGM", func(t *testing.T) {
+			expectedMockCGMId := "c97bd194-5e5e-44c1-9629-4cb87be1a4c9"
+			var mock *CGM
+			for _, p := range cfg.Devices.CGMs {
+				if p.ID == expectedMockCGMId {
+					mock = p
+					break
+				}
+			}
+
+			t.Run("Exists", func(t *testing.T) {
+				if mock == nil {
+					t.Errorf("expected mock cgm with id %v, but did not find it in config", expectedMockCGMId)
+					t.FailNow()
+				}
+			})
+
+			if mock == nil {
+				t.FailNow()
+			}
+
+			t.Run("Display name equals 'Mock CGM'", func(t *testing.T) {
+				expected := "Mock CGM"
+				if mock.DisplayName != expected {
+					t.Errorf("expected display name to equal %v, but got %v", expected, mock.DisplayName)
+					t.FailNow()
+				}
+			})
+
+			t.Run("Model equals 'Mock'", func(t *testing.T) {
+				expected := "Mock"
+				if mock.Model != expected {
+					t.Errorf("expected model to equal %v, but got %v", expected, mock.Model)
+					t.FailNow()
+				}
+			})
+
+			t.Run("Manufacturers consists of 'Tidepool'", func(t *testing.T) {
+				expected := "Tidepool"
+				if len(mock.Manufacturers) != 1 || mock.Manufacturers[0] != expected {
+					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(mock.Manufacturers, ","))
+					t.FailNow()
+				}
+			})
+
+		})
 
 		t.Run("Dexcom G6", func(t *testing.T) {
 			expectedDexomG6Id := "d25c3f1b-a2e8-44e2-b3a3-fd07806fc245"
