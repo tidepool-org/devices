@@ -9,15 +9,13 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 	cfg := NewDevicesConfig()
 	err := cfg.LoadFromFile("../devices.yaml")
 	if err != nil {
-		t.Errorf("unexpected error occurred while loading config from file: %v", err)
-		t.FailNow()
+		t.Fatalf("unexpected error occurred while loading config from file: %v", err)
 	}
 
 	t.Run("Config has two pumps", func(t *testing.T) {
 		pumpCount := len(cfg.Devices.Pumps)
 		if pumpCount != 2 {
-			t.Errorf("expected 2 pump in config, got %v", pumpCount)
-			t.FailNow()
+			t.Fatalf("expected 2 pump in config, got %v", pumpCount)
 		}
 
 		t.Run("Coastal", func(t *testing.T) {
@@ -32,8 +30,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 
 			t.Run("Exists", func(t *testing.T) {
 				if coastal == nil {
-					t.Errorf("expected coastal pump with id %v, but did not find it in config", expectedCoastalId)
-					t.FailNow()
+					t.Fatalf("expected coastal pump with id %v, but did not find it in config", expectedCoastalId)
 				}
 			})
 
@@ -44,24 +41,21 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Display name equals 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if coastal.DisplayName != expected {
-					t.Errorf("expected display name to equal %v, but got %v", expected, coastal.DisplayName)
-					t.FailNow()
+					t.Fatalf("expected display name to equal %v, but got %v", expected, coastal.DisplayName)
 				}
 			})
 
 			t.Run("Model equals 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if coastal.Model != expected {
-					t.Errorf("expected model to equal %v, but got %v", expected, coastal.Model)
-					t.FailNow()
+					t.Fatalf("expected model to equal %v, but got %v", expected, coastal.Model)
 				}
 			})
 
 			t.Run("Manufacturers consists of 'Coastal'", func(t *testing.T) {
 				expected := "Coastal"
 				if len(coastal.Manufacturers) != 1 || coastal.Manufacturers[0] != expected {
-					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(coastal.Manufacturers, ","))
-					t.FailNow()
+					t.Fatalf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(coastal.Manufacturers, ","))
 				}
 			})
 
@@ -320,8 +314,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Manufacturers consists of 'Palmtree'", func(t *testing.T) {
 				expected := "Palmtree"
 				if len(palmtree.Manufacturers) != 1 || palmtree.Manufacturers[0] != expected {
-					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(palmtree.Manufacturers, ","))
-					t.FailNow()
+					t.Fatalf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(palmtree.Manufacturers, ","))
 				}
 			})
 
@@ -556,8 +549,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 	t.Run("Config has a two cgms", func(t *testing.T) {
 		cgmCount := len(cfg.Devices.CGMs)
 		if cgmCount != 2 {
-			t.Errorf("expected 1 cgm in config, got %v", cgmCount)
-			t.FailNow()
+			t.Fatalf("expected 2 cgm in config, got %v", cgmCount)
 		}
 
 		t.Run("Mock CGM", func(t *testing.T) {
@@ -572,8 +564,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 
 			t.Run("Exists", func(t *testing.T) {
 				if mock == nil {
-					t.Errorf("expected mock cgm with id %v, but did not find it in config", expectedMockCGMId)
-					t.FailNow()
+					t.Fatalf("expected mock cgm with id %v, but did not find it in config", expectedMockCGMId)
 				}
 			})
 
@@ -584,24 +575,21 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Display name equals 'Mock CGM'", func(t *testing.T) {
 				expected := "Mock CGM"
 				if mock.DisplayName != expected {
-					t.Errorf("expected display name to equal %v, but got %v", expected, mock.DisplayName)
-					t.FailNow()
+					t.Fatalf("expected display name to equal %v, but got %v", expected, mock.DisplayName)
 				}
 			})
 
 			t.Run("Model equals 'Mock'", func(t *testing.T) {
 				expected := "Mock"
 				if mock.Model != expected {
-					t.Errorf("expected model to equal %v, but got %v", expected, mock.Model)
-					t.FailNow()
+					t.Fatalf("expected model to equal %v, but got %v", expected, mock.Model)
 				}
 			})
 
 			t.Run("Manufacturers consists of 'Tidepool'", func(t *testing.T) {
 				expected := "Tidepool"
 				if len(mock.Manufacturers) != 1 || mock.Manufacturers[0] != expected {
-					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(mock.Manufacturers, ","))
-					t.FailNow()
+					t.Fatalf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(mock.Manufacturers, ","))
 				}
 			})
 
@@ -619,8 +607,7 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 
 			t.Run("Exists", func(t *testing.T) {
 				if g6 == nil {
-					t.Errorf("expected dexcom g6 pod with id %v, but did not find it in config", expectedDexomG6Id)
-					t.FailNow()
+					t.Fatalf("expected dexcom g6 pod with id %v, but did not find it in config", expectedDexomG6Id)
 				}
 			})
 
@@ -631,24 +618,21 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 			t.Run("Display name equals 'Dexcom G6'", func(t *testing.T) {
 				expected := "Dexcom G6"
 				if g6.DisplayName != expected {
-					t.Errorf("expected display name to equal %v, but got %v", expected, g6.DisplayName)
-					t.FailNow()
+					t.Fatalf("expected display name to equal %v, but got %v", expected, g6.DisplayName)
 				}
 			})
 
 			t.Run("Model equals 'G6'", func(t *testing.T) {
 				expected := "G6"
 				if g6.Model != expected {
-					t.Errorf("expected model to equal %v, but got %v", expected, g6.Model)
-					t.FailNow()
+					t.Fatalf("expected model to equal %v, but got %v", expected, g6.Model)
 				}
 			})
 
 			t.Run("Manufacturers consists of 'Dexcom'", func(t *testing.T) {
 				expected := "Dexcom"
 				if len(g6.Manufacturers) != 1 || g6.Manufacturers[0] != expected {
-					t.Errorf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(g6.Manufacturers, ","))
-					t.FailNow()
+					t.Fatalf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(g6.Manufacturers, ","))
 				}
 			})
 
