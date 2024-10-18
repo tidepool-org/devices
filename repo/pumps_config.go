@@ -113,6 +113,7 @@ func PopulateInsulinSensitivityFromConfig(cfg config.GuardRail, guardRail *api.I
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
 		return err
@@ -128,16 +129,16 @@ func PopulateBasalRatesFromConfig(cfg config.GuardRail, guardRail *api.BasalRate
 	if cfg.Units != "U/h" {
 		return errors.New(fmt.Sprintf("unrecognized basal rate unit %v", cfg.Units))
 	}
-	if cfg.DefaultValue == nil {
-		return errors.New(fmt.Sprintf("default value cannot be nil"))
-	}
 
 	guardRail.Units = api.BasalRateUnits_UnitsPerHour
-	guardRail.DefaultValue = &api.FixedDecimal{
-		Units: cfg.DefaultValue.Units,
-		Nanos: cfg.DefaultValue.Nanos,
+	if cfg.DefaultValue != nil {
+		guardRail.DefaultValue = &api.FixedDecimal{
+			Units: cfg.DefaultValue.Units,
+			Nanos: cfg.DefaultValue.Nanos,
+		}
 	}
 	guardRail.AbsoluteBounds = make([]*api.AbsoluteBounds, len(cfg.AbsoluteBounds))
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateAbsoluteBoundsArrayFromConfig(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err
@@ -154,6 +155,7 @@ func PopulateCarbohydrateRatioFromConfig(cfg config.GuardRail, guardRail *api.Ca
 	guardRail.Units = api.CarbohydrateRatioUnits_GramsPerUnit
 	guardRail.RecommendedBounds = &api.RecommendedBounds{}
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
 
 	if err := PopulateRecommendedBoundsFromConfig(cfg.RecommendedBounds, guardRail.RecommendedBounds); err != nil {
 		return err
@@ -213,6 +215,8 @@ func PopulateCorrectionRangeFromConfig(cfg config.GuardRail, guardRail *api.Corr
 
 	guardRail.Units = api.BloodGlucoseUnits_MilligramsPerDeciliter
 	guardRail.AbsoluteBounds = &api.AbsoluteBounds{}
+	guardRail.MaxSegments = cfg.MaxSegments
+
 	if err := PopulateAbsoluteBoundsFromFirstConfigValue(cfg.AbsoluteBounds, guardRail.AbsoluteBounds); err != nil {
 		return err
 	}

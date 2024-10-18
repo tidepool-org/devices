@@ -1,88 +1,16 @@
 devices:
   cgms:
+    - id: c97bd194-5e5e-44c1-9629-4cb87be1a4c9
+      display_name: Mock CGM
+      manufacturers:
+        - Tidepool
+      model: Mock
     - id: d25c3f1b-a2e8-44e2-b3a3-fd07806fc245
       display_name: Dexcom G6
       manufacturers:
         - Dexcom
       model: G6
   pumps:
-    - id: 6678c377-928c-49b3-84c1-19e2dafaff8d
-      display_name: Omnipod Horizon
-      manufacturers:
-        - Insulet
-      model: Omnipod Horizon
-      guard_rails:
-        glucose_safety_limit:
-          units: "mg/dL"
-          absolute_bounds:
-            - increment: 1.0
-              min: 67
-              max: 110
-          recommended_bounds:
-            min: 74
-            max: 80
-        insulin_sensitivity:
-          units: "mg/dL"
-          absolute_bounds:
-            - increment: 1.0
-              min: 10
-              max: 500
-          recommended_bounds:
-            min: 16
-            max: 399
-        basal_rates:
-          units: "U/h"
-          default: 0.05
-          absolute_bounds:
-            - increment: 0.05
-              min: 0.05
-              max: 30.0
-        carbohydrate_ratio:
-          units: "g/U"
-          absolute_bounds:
-            - increment: 0.01
-              min: 2.0
-              max: 150.0
-          recommended_bounds:
-            min: 4.00
-            max: 28.00
-        basal_rate_maximum:
-          units: "U/h"
-          default: 0.05
-          absolute_bounds:
-            - increment: 0.05
-              min: 0.05
-              max: 30.0
-        bolus_amount_maximum:
-          units: "U"
-          absolute_bounds:
-            - increment: 0.05
-              min: 0.05
-              max: 30.0
-          recommended_bounds:
-            min: 0.10
-            max: 19.95
-        correction_range:
-          units: "mg/dL"
-          absolute_bounds:
-            - increment: 1.0
-              min: 87
-              max: 180
-          recommended_bounds:
-            min: 100
-            max: 115
-        preprandial_correction_range:
-          units: "mg/dL"
-          absolute_bounds:
-            - increment: 1.0
-              min: 67
-              max: 130
-        workout_correction_range:
-          units: "mg/dL"
-          absolute_bounds:
-            - increment: 1.0
-              min: 87
-              max: 250
     - id: e4a46eda-02f9-4faf-b8f4-ef7b40d02e4f
       display_name: Coastal
       manufacturers:
@@ -148,6 +76,86 @@ devices:
           recommended_bounds:
             min: 100
             max: 115
+        preprandial_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 67
+              max: 130
+        workout_correction_range:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 87
+              max: 250
+    - id: c524b5b0-632e-4125-8f6a-df9532d8f6fe
+      display_name: Palmtree
+      manufacturers:
+        - Palmtree
+      model: Palmtree
+      guard_rails:
+        glucose_safety_limit:
+          units: "mg/dL"
+          absolute_bounds:
+            - increment: 1.0
+              min: 67
+              max: 110
+          recommended_bounds:
+            min: 74
+            max: 80
+        insulin_sensitivity:
+          units: "mg/dL"
+          max_segments: 48
+          absolute_bounds:
+            - increment: 1.0
+              min: 5
+              max: 500
+          recommended_bounds:
+            min: 16
+            max: 399
+        basal_rates:
+          units: "U/h"
+          max_segments: 24
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.05
+              max: 30.0
+        carbohydrate_ratio:
+          units: "g/U"
+          max_segments: 48
+          absolute_bounds:
+            - increment: 0.1
+              min: 2.0
+              max: 150.0
+          recommended_bounds:
+            min: 4.00
+            max: 28.00
+        basal_rate_maximum:
+          units: "U/h"
+          default: 0.05
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.05
+              max: 30.0
+        bolus_amount_maximum:
+          units: "U"
+          absolute_bounds:
+            - increment: 0.05
+              min: 0.05
+              max: 30.0
+          recommended_bounds:
+            min: 0.10
+            max: 19.95
+        correction_range:
+          units: "mg/dL"
+          max_segments: 48
+          absolute_bounds:
+            - increment: 1.0
+              min: 87
+              max: 180
+          recommended_bounds:
+            min: 100
+            max: 125
         preprandial_correction_range:
           units: "mg/dL"
           absolute_bounds:
