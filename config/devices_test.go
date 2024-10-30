@@ -12,10 +12,10 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 		t.Fatalf("unexpected error occurred while loading config from file: %v", err)
 	}
 
-	t.Run("Config has two pumps", func(t *testing.T) {
+	t.Run("Config has three pumps", func(t *testing.T) {
 		pumpCount := len(cfg.Devices.Pumps)
-		if pumpCount != 2 {
-			t.Fatalf("expected 2 pump in config, got %v", pumpCount)
+		if pumpCount != 3 {
+			t.Fatalf("expected 3 pump in config, got %v", pumpCount)
 		}
 
 		t.Run("Coastal", func(t *testing.T) {
@@ -529,6 +529,277 @@ func TestDevicesConfig_LoadFromFile(t *testing.T) {
 				})
 				t.Run("Pre-meal correction range is correct", func(t *testing.T) {
 					isExpected(t, palmtree.GuardRails.WorkoutCorrectionRange, GuardRail{
+						Units: "mg/dL",
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 87},
+									Maximum: &FixedDecimal{Units: 180},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+					})
+				})
+			})
+
+		})
+
+		t.Run("Pump Simulator", func(t *testing.T) {
+			expectedSimulatorId := "aff19260-fca9-4efc-9b81-dcd39f695979"
+			var simulator *Pump
+			for _, p := range cfg.Devices.Pumps {
+				if p.ID == expectedSimulatorId {
+					simulator = p
+					break
+				}
+			}
+
+			t.Run("Exists", func(t *testing.T) {
+				if simulator == nil {
+					t.Errorf("expected simulator pump with id %v, but did not find it in config", expectedSimulatorId)
+					t.FailNow()
+				}
+			})
+
+			if simulator == nil {
+				t.FailNow()
+			}
+
+			t.Run("Display name equals 'Pump Simulator'", func(t *testing.T) {
+				expected := "Pump Simulator"
+				if simulator.DisplayName != expected {
+					t.Errorf("expected display name to equal %v, but got %v", expected, simulator.DisplayName)
+					t.FailNow()
+				}
+			})
+
+			t.Run("Model equals 'Pump Simulator'", func(t *testing.T) {
+				expected := "Pump Simulator"
+				if simulator.Model != expected {
+					t.Errorf("expected model to equal %v, but got %v", expected, simulator.Model)
+					t.FailNow()
+				}
+			})
+
+			t.Run("Manufacturers consists of 'Tidepool'", func(t *testing.T) {
+				expected := "Tidepool"
+				if len(simulator.Manufacturers) != 1 || simulator.Manufacturers[0] != expected {
+					t.Fatalf("expected manufacturers equal [%v], but got [%v]", expected, strings.Join(simulator.Manufacturers, ","))
+				}
+			})
+
+			t.Run("Guard Rails", func(t *testing.T) {
+				fixedDecimalsAreEqual := func(a, b FixedDecimal) bool {
+					return a.Units == b.Units && a.Nanos == b.Nanos
+				}
+				isExpected := func(t *testing.T, result GuardRail, expected GuardRail) {
+					if result.Units != expected.Units {
+						t.Errorf("expected %v units got %v", expected.Units, result.Units)
+					}
+					if expected.DefaultValue != nil {
+						if result.DefaultValue == nil || !fixedDecimalsAreEqual(*result.DefaultValue, *expected.DefaultValue) {
+							t.Errorf("expected %v got %v", *expected.DefaultValue, *result.DefaultValue)
+						}
+					}
+					if expected.MaxSegments != nil {
+						if result.MaxSegments == nil || *expected.MaxSegments != *result.MaxSegments {
+							t.Errorf("expected %v got %v", *expected.MaxSegments, *result.MaxSegments)
+						}
+					}
+					if expected.AbsoluteBounds != nil {
+						for i, b := range expected.AbsoluteBounds {
+							expectedValue := *expected.AbsoluteBounds[i].Increment
+							resultValue := *b.Increment
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
+								t.Errorf("expected %v got %v", expectedValue, resultValue)
+							}
+
+							expectedValue = *expected.AbsoluteBounds[i].Minimum
+							resultValue = *b.Minimum
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
+								t.Errorf("expected %v got %v", expectedValue, resultValue)
+							}
+
+							expectedValue = *expected.AbsoluteBounds[i].Maximum
+							resultValue = *b.Maximum
+							if !fixedDecimalsAreEqual(expectedValue, resultValue) {
+								t.Errorf("expected %v got %v", expectedValue, resultValue)
+							}
+						}
+					}
+					if expected.RecommendedBounds != nil {
+						expectedValue := *expected.RecommendedBounds.Minimum
+						resultValue := *result.RecommendedBounds.Minimum
+						if !fixedDecimalsAreEqual(expectedValue, resultValue) {
+							t.Errorf("expected %v got %v", expectedValue, resultValue)
+						}
+
+						expectedValue = *expected.RecommendedBounds.Maximum
+						resultValue = *result.RecommendedBounds.Maximum
+						if !fixedDecimalsAreEqual(expectedValue, resultValue) {
+							t.Errorf("expected %v got %v", expectedValue, resultValue)
+						}
+					}
+				}
+				t.Run("Glucose safety limit is correct", func(t *testing.T) {
+					isExpected(t, simulator.GuardRails.GlucoseSafetyLimit, GuardRail{
+						Units:        "mg/dL",
+						DefaultValue: nil,
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 67},
+									Maximum: &FixedDecimal{Units: 110},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+						RecommendedBounds: &RecommendedBounds{
+							Bounds{
+								Minimum: &FixedDecimal{Units: 74},
+								Maximum: &FixedDecimal{Units: 80},
+							},
+						},
+					})
+				})
+				t.Run("Insulin sensitivity is correct", func(t *testing.T) {
+					maxSegments := int32(48)
+					isExpected(t, simulator.GuardRails.InsulinSensitivity, GuardRail{
+						Units:        "mg/dL",
+						DefaultValue: nil,
+						MaxSegments:  &maxSegments,
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 10},
+									Maximum: &FixedDecimal{Units: 500},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+						RecommendedBounds: &RecommendedBounds{
+							Bounds{
+								Minimum: &FixedDecimal{Units: 16},
+								Maximum: &FixedDecimal{Units: 399},
+							},
+						},
+					})
+				})
+				t.Run("Basal rates is correct", func(t *testing.T) {
+					maxSegments := int32(24)
+					isExpected(t, simulator.GuardRails.BasalRates, GuardRail{
+						Units:       "U/h",
+						MaxSegments: &maxSegments,
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Nanos: 50000000},
+									Maximum: &FixedDecimal{Units: 30},
+								},
+								Increment: &FixedDecimal{Nanos: 50000000},
+							},
+						},
+						RecommendedBounds: nil,
+					})
+				})
+				t.Run("Carbohydrate ratio is correct", func(t *testing.T) {
+					maxSegments := int32(48)
+					isExpected(t, simulator.GuardRails.CarbohydrateRatio, GuardRail{
+						Units:        "g/U",
+						DefaultValue: nil,
+						MaxSegments:  &maxSegments,
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 2},
+									Maximum: &FixedDecimal{Units: 150},
+								},
+								Increment: &FixedDecimal{Nanos: 10000000},
+							},
+						},
+						RecommendedBounds: &RecommendedBounds{
+							Bounds{
+								Minimum: &FixedDecimal{Units: 4},
+								Maximum: &FixedDecimal{Units: 28},
+							},
+						},
+					})
+				})
+				t.Run("Basal rate maximum is correct", func(t *testing.T) {
+					isExpected(t, simulator.GuardRails.BasalRateMaximum, GuardRail{
+						Units:        "U/h",
+						DefaultValue: &FixedDecimal{Units: 0, Nanos: 50000000},
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
+									Maximum: &FixedDecimal{Units: 30},
+								},
+								Increment: &FixedDecimal{Nanos: 50000000},
+							},
+						},
+						RecommendedBounds: nil,
+					})
+				})
+				t.Run("Bolus amount maximum is correct", func(t *testing.T) {
+					isExpected(t, simulator.GuardRails.BolusAmountMaximum, GuardRail{
+						Units: "U",
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 0, Nanos: 50000000},
+									Maximum: &FixedDecimal{Units: 30},
+								},
+								Increment: &FixedDecimal{Nanos: 50000000},
+							},
+						},
+						RecommendedBounds: &RecommendedBounds{
+							Bounds{
+								Minimum: &FixedDecimal{Units: 0, Nanos: 100000000},
+								Maximum: &FixedDecimal{Units: 19, Nanos: 950000000},
+							},
+						},
+					})
+				})
+				t.Run("Correction range is correct", func(t *testing.T) {
+					maxSegments := int32(48)
+					isExpected(t, simulator.GuardRails.CorrectionRange, GuardRail{
+						Units:       "mg/dL",
+						MaxSegments: &maxSegments,
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 87},
+									Maximum: &FixedDecimal{Units: 180},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+						RecommendedBounds: &RecommendedBounds{
+							Bounds{
+								Minimum: &FixedDecimal{Units: 100},
+								Maximum: &FixedDecimal{Units: 125},
+							},
+						},
+					})
+				})
+				t.Run("Workout correction range is correct", func(t *testing.T) {
+					isExpected(t, simulator.GuardRails.WorkoutCorrectionRange, GuardRail{
+						Units: "mg/dL",
+						AbsoluteBounds: []*AbsoluteBounds{
+							&AbsoluteBounds{
+								Bounds: Bounds{
+									Minimum: &FixedDecimal{Units: 87},
+									Maximum: &FixedDecimal{Units: 250},
+								},
+								Increment: &FixedDecimal{Units: 1},
+							},
+						},
+					})
+				})
+				t.Run("Pre-meal correction range is correct", func(t *testing.T) {
+					isExpected(t, simulator.GuardRails.WorkoutCorrectionRange, GuardRail{
 						Units: "mg/dL",
 						AbsoluteBounds: []*AbsoluteBounds{
 							&AbsoluteBounds{
