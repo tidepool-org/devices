@@ -7,6 +7,7 @@ import (
 	"github.com/tidepool-org/devices/api"
 	"github.com/tidepool-org/devices/config"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net"
 	"net/http"
@@ -27,7 +28,7 @@ func NewGatewayProxy(cfg *config.Config) *GatewayProxy {
 
 func (g *GatewayProxy) Initialize(ctx context.Context, endpoint string) error {
 	mux := runtime.NewServeMux()
-	err := api.RegisterDevicesHandlerFromEndpoint(ctx, mux, endpoint, []grpc.DialOption{grpc.WithInsecure()})
+	err := api.RegisterDevicesHandlerFromEndpoint(ctx, mux, endpoint, []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())})
 	if err != nil {
 		return err
 	}
